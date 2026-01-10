@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URBAN PULSE | About Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
+    <style>
+        :root {
+            --bg: #030313;
+            --panel: rgba(255, 255, 255, 0.04);
+            --muted: #9aa8c3;
+            --neon1: #7c3aed;
+            --neon2: #06b6d4;
+            --neon3: #ff4d6d;
+            --glass: rgba(255, 255, 255, 0.03);
+            --maxw: 1200px;
+            --radius: 16px;
+            --glass-border: rgba(255, 255, 255, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(1200px 600px at 10% 10%, rgba(124, 58, 237, 0.09), transparent 6%),
+                        radial-gradient(800px 400px at 90% 90%, rgba(6, 182, 212, 0.07), transparent 6%),
+                        var(--bg);
+            color: #eaf2ff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .accent {
+            background: linear-gradient(90deg, var(--neon2), var(--neon1));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(3, 3, 19, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #eaf2ff;
+            text-decoration: none;
+        }
+
+        .logo span {
+            background: linear-gradient(90deg, var(--neon2), var(--neon1));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            padding: 8px 12px;
+            border-radius: 10px;
+        }
+
+        nav a:hover {
+            color: white;
+            transform: translateY(-3px);
+            text-shadow: 0 6px 18px rgba(124, 58, 237, 0.12);
+        }
+
+        nav a.active {
+            background: linear-gradient(90deg, var(--neon1), var(--neon2));
+            color: #030313;
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.12);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            backdrop-filter: blur(6px);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding: 100px 20px 20px;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 2;
+            padding: 60px 40px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+            border-radius: var(--radius);
+            box-shadow: 0 10px 40px rgba(2, 6, 23, 0.6);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: visible;
+        }
+
+        .hero-content::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(6, 182, 212, 0.03));
+            z-index: -1;
+            border-radius: inherit;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 20px;
+            line-height: 1;
+            text-shadow: 0 0 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: var(--muted);
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 40px;
+            background: linear-gradient(90deg, var(--neon1), var(--neon2));
+            color: #030313;
+            text-decoration: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 10px 40px rgba(124, 58, 237, 0.12);
+            backdrop-filter: blur(6px);
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(124, 58, 237, 0.25);
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 100px 5%;
+            background: transparent;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 70px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon1), var(--neon2), var(--neon3));
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            filter: blur(2px);
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 50px;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+            border-radius: var(--radius);
+            border: 1px solid var(--glass-border);
+        }
+
+        .about-text h3 {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            color: var(--neon2);
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: var(--muted);
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .image-frame {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+            border-radius: var(--radius);
+            border: 1px solid var(--glass-border);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent);
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .image-frame:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Values Section - Updated */
+        .values-section {
+            padding: 100px 5%;
+            background: transparent;
+        }
+
+        .values-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .value-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.03), rgba(6, 182, 212, 0.01));
+            z-index: -1;
+            border-radius: inherit;
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon1);
+            box-shadow: 0 20px 60px rgba(124, 58, 237, 0.1);
+        }
+
+        .value-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            padding: 20px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Individual icon styling matching their respective titles */
+        .value-card:nth-child(1) .value-icon { /* Authenticity */
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(6, 182, 212, 0.05));
+            color: var(--neon1);
+            border-color: rgba(124, 58, 237, 0.2);
+        }
+
+        .value-card:nth-child(2) .value-icon { /* Confidence */
+            background: linear-gradient(135deg, rgba(255, 77, 109, 0.1), rgba(124, 58, 237, 0.05));
+            color: var(--neon3);
+            border-color: rgba(255, 77, 109, 0.2);
+        }
+
+        .value-card:nth-child(3) .value-icon { /* Individuality */
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(124, 58, 237, 0.05));
+            color: var(--neon2);
+            border-color: rgba(6, 182, 212, 0.2);
+        }
+
+        .value-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        /* Title colors matching their respective icons */
+        .value-card:nth-child(1) h3 {
+            color: var(--neon1); /* Authenticity - Purple */
+        }
+
+        .value-card:nth-child(2) h3 {
+            color: var(--neon3); /* Confidence - Pink */
+        }
+
+        .value-card:nth-child(3) h3 {
+            color: var(--neon2); /* Individuality - Cyan */
+        }
+
+        .value-card p {
+            color: var(--muted);
+        }
+
+        /* Interactive Game Section */
+        .game-section {
+            padding: 100px 5%;
+            background: transparent;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .game-intro {
+            max-width: 800px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .game-intro h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--neon1), var(--neon2), var(--neon3));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .game-intro p {
+            font-size: 1.2rem;
+            color: var(--muted);
+        }
+
+        /* 3D Canvas Container */
+        .canvas-container {
+            width: 100%;
+            max-width: 900px;
+            height: 500px;
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            background: rgba(3, 3, 19, 0.3);
+        }
+
+        #gameCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .game-ui {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .game-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(3, 3, 19, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--glass-border);
+            pointer-events: all;
+        }
+
+        .game-question {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .game-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .game-option {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            pointer-events: all;
+        }
+
+        .game-option:hover {
+            background: rgba(124, 58, 237, 0.15);
+            color: white;
+            transform: translateY(-5px);
+            border-color: var(--neon1);
+        }
+
+        .game-option.selected {
+            background: linear-gradient(90deg, rgba(124, 58, 237, 0.2), rgba(6, 182, 212, 0.2));
+            color: white;
+            border-color: var(--neon2);
+            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            pointer-events: all;
+        }
+
+        .game-btn {
+            padding: 12px 30px;
+            background: linear-gradient(90deg, var(--neon1), var(--neon2));
+            color: #030313;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .game-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .game-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .game-progress {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .game-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon1), var(--neon2));
+            transition: width 0.5s ease;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            padding: 80px 5%;
+            background: transparent;
+            text-align: center;
+        }
+
+        .results-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+            border-radius: var(--radius);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(6, 182, 212, 0.03));
+            z-index: -1;
+            border-radius: inherit;
+        }
+
+        .results-title {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, var(--neon1), var(--neon2), var(--neon3));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .personality-type {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--neon2);
+        }
+
+        .personality-description {
+            font-size: 1.2rem;
+            color: var(--muted);
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .fashion-recommendation {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: var(--radius);
+            margin-bottom: 40px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .fashion-recommendation h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--neon3);
+        }
+
+        .recommended-items {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .item-card {
+            width: 200px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .item-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--neon2);
+            box-shadow: 0 15px 40px rgba(6, 182, 212, 0.2);
+        }
+
+        .item-img {
+            width: 100%;
+            height: 160px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-name {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .item-price {
+            color: var(--neon2);
+            font-weight: 600;
+        }
+
+        .discover-btn {
+            margin-top: 30px;
+            padding: 15px 50px;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(3, 3, 19, 0.95);
+            padding: 70px 5% 30px;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--neon2);
+        }
+
+        .footer-column p {
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: 1px solid var(--glass-border);
+        }
+
+        .social-links a:hover {
+            background: linear-gradient(90deg, var(--neon1), var(--neon2));
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.2);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--glass-border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes starTwinkle {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(.2, .9, .3, 1), 
+                        transform 0.7s cubic-bezier(.2, .9, .3, 1);
+        }
+
+        .fade-up.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Parallax background elements */
+        .parallax {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .layer {
+            position: absolute;
+            will-change: transform;
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            filter: blur(18px);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .mobile-menu {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: rgba(3, 3, 19, 0.95);
+                padding: 20px;
+                display: none;
+                flex-direction: column;
+                align-items: center;
+                z-index: 999;
+                backdrop-filter: blur(20px);
+                border-bottom: 1px solid var(--glass-border);
+            }
+            
+            .mobile-menu.active {
+                display: flex;
+            }
+            
+            .mobile-menu li {
+                margin: 15px 0;
+            }
+            
+            .mobile-menu a {
+                font-size: 18px;
+            }
+            
+            .game-intro h2 {
+                font-size: 2.5rem;
+            }
+            
+            .canvas-container {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .about-text h3 {
+                font-size: 1.8rem;
+            }
+            
+            .hero-content {
+                padding: 40px 20px;
+            }
+            
+            .results-title {
+                font-size: 2.5rem;
+            }
+            
+            .personality-type {
+                font-size: 2rem;
+            }
+            
+            .canvas-container {
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .cta-button {
+                padding: 12px 30px;
+            }
+            
+            .values-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-options {
+                flex-direction: column;
+            }
+            
+            .canvas-container {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Parallax Background Elements -->
+    <div class="parallax" id="parallax">
+        <div class="layer" style="left:-10%;top:5%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(124,58,237,0.16), transparent 20%), radial-gradient(circle at 70% 70%, rgba(6,182,212,0.10), transparent 30%);filter:blur(40px);transform:translateZ(0)"></div>
+        <div class="layer" style="right:-6%;bottom:10%;width:540px;height:540px;border-radius:50%;background:radial-gradient(circle at 20% 10%, rgba(255,77,109,0.12), transparent 18%), radial-gradient(circle at 80% 80%, rgba(6,182,212,0.06), transparent 30%);filter:blur(30px);transform:translateZ(0)"></div>
+        <div class="layer ring" style="width:420px;height:420px;left:10%;top:18%;border-color:rgba(124,58,237,0.12)"></div>
+        <div class="layer ring" style="width:620px;height:620px;right:6%;bottom:-6%;border-color:rgba(6,182,212,0.10)"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <a href="#" class="logo">URBAN<span>PULSE</span></a>
+        
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#" class="active">About</a></li>
+                <li><a href="#">Collection</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content float">
+            <h1>WELCOME TO</h1>
+            <h1><span class="accent">OUR UNIVERSE</span></h1>
+            <p>Explore your personality constellation and discover fashion that truly reflects who you are.</p>
+            <a href="#game" class="cta-button fade-up" data-delay="0.3">
+                <i class="fas fa-rocket"></i> LAUNCH PERSONALITY EXPLORER
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <h2 class="section-title fade-up">WE ARE STARS</h2>
+        <div class="about-content">
+            <div class="about-text fade-up" data-delay="0.1">
+                <h3>Redefining Streetwear Through Personality</h3>
+                <p>At URBAN PULSE, we believe fashion should be as unique as your fingerprint. That's why we've created an interactive journey through the cosmos of self-discovery.</p>
+                <p>Just as every star has its place in the galaxy, every individual has a unique constellation of traits that define their personal style.</p>
+                <p>Our Personality Cosmos Explorer helps you navigate this universe, revealing fashion that aligns with your authentic self.</p>
+            </div>
+            <div class="about-image fade-up" data-delay="0.2">
+                <div class="image-frame">
+                    <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Urban Pulse streetwear collection">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+        <h2 class="section-title fade-up">Our Core Values</h2>
+        <div class="values-container">
+            <div class="value-card fade-up" data-delay="0.1">
+                <div class="value-icon">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <h3>Authenticity</h3>
+                <p>Your style should reflect your true self. We create pieces that tell your unique story without compromise.</p>
+            </div>
+            <div class="value-card fade-up" data-delay="0.2">
+                <div class="value-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <h3>Confidence</h3>
+                <p>When you wear clothes that truly represent you, you stand taller, speak louder, and own any room you enter.</p>
+            </div>
+            <div class="value-card fade-up" data-delay="0.3">
+                <div class="value-icon">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+                <h3>Individuality</h3>
+                <p>In a universe of 8 billion people, your style should be as unique as your fingerprint. Celebrate what makes you different.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Game Section -->
+    <section class="game-section" id="game">
+        <div class="game-container">
+            <div class="game-intro fade-up">
+                <h2>Discover Your Cosmic Style</h2>
+                <p>Navigate through a 3D universe of personality traits. Your choices will create a unique constellation that reveals your true style identity and perfectly matched URBAN PULSE pieces.</p>
+            </div>
+            
+            <div class="canvas-container fade-up" data-delay="0.2">
+                <canvas id="gameCanvas"></canvas>
+                <div class="game-ui">
+                    <div class="game-panel">
+                        <div class="game-progress">
+                            <div class="game-progress-bar" id="progressBar"></div>
+                        </div>
+                        <div class="game-question" id="questionText">
+                            Welcome to the Personality Cosmos! Ready to begin your journey?
+                        </div>
+                        <div class="game-options" id="optionsContainer">
+                            <div class="game-option" data-value="start">Begin Cosmic Journey</div>
+                        </div>
+                        <div class="game-controls">
+                            <button class="game-btn" id="prevBtn" disabled>
+                                <i class="fas fa-arrow-left"></i> Previous
+                            </button>
+                            <button class="game-btn" id="nextBtn" disabled>
+                                Continue <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="game-instructions fade-up" data-delay="0.3" style="text-align: center; max-width: 700px; color: var(--muted);">
+                <p><i class="fas fa-mouse-pointer" style="margin-right: 8px;"></i> Use your mouse to rotate the 3D universe</p>
+                <p><i class="fas fa-arrows-alt" style="margin-right: 8px;"></i> Scroll to zoom in and out</p>
+                <p><i class="fas fa-hand-pointer" style="margin-right: 8px;"></i> Select the option that resonates most with you</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section" id="resultsSection">
+        <div class="results-container">
+            <h2 class="results-title">YOUR COSMIC STYLE PROFILE</h2>
+            <div class="personality-type" id="personalityType">The Nebula Dreamer</div>
+            <div class="personality-description" id="personalityDescription">
+                Your constellation reveals a creative spirit with an eye for the extraordinary. You value self-expression and aren't afraid to stand out in a crowd. Your style is ethereal yet grounded, blending cosmic inspiration with urban practicality.
+            </div>
+            
+            <div class="fashion-recommendation">
+                <h3>YOUR PERFECT URBAN PULSE COLLECTION</h3>
+                <p>Based on your cosmic personality, these pieces are designed to amplify your unique energy and style.</p>
+                
+                <div class="recommended-items" id="recommendedItems">
+                    <!-- Items will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <a href="#" class="cta-button discover-btn pulse">
+                <i class="fas fa-shopping-bag"></i> EXPLORE YOUR COLLECTION
+            </a>
+            
+            <p style="margin-top: 30px; color: var(--muted); font-size: 0.9rem;">
+                Your cosmic style profile has been saved! Use code <strong style="color: var(--neon2);">COSMIC20</strong> for 20% off your first order.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>URBAN PULSE</h3>
+                <p>Streetwear for the culture. Apparel for the bold. Fashion for the future.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul style="list-style: none;">
+                    <li><a href="#" style="color: var(--muted); text-decoration: none; line-height: 2;">New Arrivals</a></li>
+                    <li><a href="#" style="color: var(--muted); text-decoration: none; line-height: 2;">Best Sellers</a></li>
+                    <li><a href="#" style="color: var(--muted); text-decoration: none; line-height: 2;">Lookbook</a></li>
+                    <li><a href="#" style="color: var(--muted); text-decoration: none; line-height: 2;">Collaborations</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+      
+                <p><i class="fas fa-phone" style="margin-right: 10px; color: var(--neon2);"></i> +254-745-151-478</p>
+                
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 URBAN PULSE. All rights reserved. | Designed with <i class="fas fa-heart" style="color: var(--neon3);"></i> for street culture</p>
+        </div>
+    </footer>
+
+    <script>
+        // Game State
+        let gameState = {
+            currentStep: 0,
+            answers: [],
+            personalityScore: {
+                creative: 0,
+                bold: 0,
+                minimalist: 0,
+                nostalgic: 0,
+                futuristic: 0
+            },
+            personalityTypes: [
+                {
+                    name: "The Nebula Dreamer",
+                    description: "Your constellation reveals a creative spirit with an eye for the extraordinary. You value self-expression and aren't afraid to stand out in a crowd. Your style is ethereal yet grounded, blending cosmic inspiration with urban practicality.",
+                    traits: ["creative", "futuristic"],
+                    collection: "Celestial Dreams"
+                },
+                {
+                    name: "The Solar Pioneer",
+                    description: "Bold, confident, and always leading the way. Your style makes a statement before you even speak. You're drawn to pieces that command attention while maintaining an air of effortless cool.",
+                    traits: ["bold", "futuristic"],
+                    collection: "Solar Flare"
+                },
+                {
+                    name: "The Galactic Minimalist",
+                    description: "Less is more in your universe. You appreciate clean lines, subtle details, and pieces that speak volumes through their simplicity. Your style is timeless, sophisticated, and always intentional.",
+                    traits: ["minimalist", "creative"],
+                    collection: "Orbit Essentials"
+                },
+                {
+                    name: "The Cosmic Nomad",
+                    description: "A traveler at heart, your style blends cultures, eras, and influences into something uniquely your own. You're not afraid to mix patterns, textures, and silhouettes to create looks that tell a story.",
+                    traits: ["nostalgic", "creative"],
+                    collection: "Stellar Voyager"
+                },
+                {
+                    name: "The Quantum Architect",
+                    description: "Precision and innovation define your approach to style. You appreciate technical fabrics, innovative designs, and pieces that are both functional and fashion-forward. Your look is calculated yet captivating.",
+                    traits: ["futuristic", "minimalist"],
+                    collection: "Quantum Edge"
+                }
+            ],
+            fashionItems: [
+                {
+                    name: "Nebula Hoodie",
+                    price: "$89",
+                    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    collection: "Celestial Dreams",
+                    description: "Gradient dye hoodie with cosmic pattern"
+                },
+                {
+                    name: "Solar Flare Jacket",
+                    price: "$129",
+                    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    collection: "Solar Flare",
+                    description: "Reflective tech jacket with orange accents"
+                },
+                {
+                    name: "Orbit T-Shirt",
+                    price: "$45",
+                    image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    collection: "Orbit Essentials",
+                    description: "Minimalist tee with orbital graphic"
+                },
+                {
+                    name: "Stellar Cargo Pants",
+                    price: "$79",
+                    image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    collection: "Stellar Voyager",
+                    description: "Utility pants with multiple pockets"
+                },
+                {
+                    name: "Quantum Tech Pants",
+                    price: "$99",
+                    image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    collection: "Quantum Edge",
+                    description: "Water-resistant technical trousers"
+                },
+                {
+                    name: "Cosmos Sneakers",
+                    price: "$145",
+                    image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    collection: "Celestial Dreams",
+                    description: "Star-patterned high-top sneakers"
+                }
+            ]
+        };
+
+        // Game Questions
+        const gameQuestions = [
+            {
+                question: "Imagine you're floating in space. What's the first thing you notice?",
+                options: [
+                    { text: "The intricate patterns of distant galaxies", value: "creative" },
+                    { text: "The intense energy of nearby stars", value: "bold" },
+                    { text: "The peaceful emptiness between celestial bodies", value: "minimalist" },
+                    { text: "Familiar constellations from ancient stories", value: "nostalgic" },
+                    { text: "The mathematical precision of planetary orbits", value: "futuristic" }
+                ]
+            },
+            {
+                question: "What's your approach to exploring a new planet?",
+                options: [
+                    { text: "Document everything with artistic sketches", value: "creative" },
+                    { text: "Charge ahead to discover hidden treasures", value: "bold" },
+                    { text: "Carefully map the most efficient route", value: "minimalist" },
+                    { text: "Compare it to places I've read about", value: "nostalgic" },
+                    { text: "Analyze its potential for future development", value: "futuristic" }
+                ]
+            },
+            {
+                question: "Which cosmic phenomenon resonates with you most?",
+                options: [
+                    { text: "Auroras - dancing lights of creative energy", value: "creative" },
+                    { text: "Supernovas - explosive displays of power", value: "bold" },
+                    { text: "Black holes - mysterious simplicity", value: "minimalist" },
+                    { text: "Shooting stars - timeless wishes", value: "nostalgic" },
+                    { text: "Wormholes - gateways to new possibilities", value: "futuristic" }
+                ]
+            },
+            {
+                question: "How do you navigate through an asteroid field?",
+                options: [
+                    { text: "Find beauty in the chaos and weave through", value: "creative" },
+                    { text: "Power through with confidence and speed", value: "bold" },
+                    { text: "Calculate the safest, most direct path", value: "minimalist" },
+                    { text: "Use traditional navigation techniques", value: "nostalgic" },
+                    { text: "Deploy advanced technology to map the field", value: "futuristic" }
+                ]
+            },
+            {
+                question: "What would you bring back from your cosmic journey?",
+                options: [
+                    { text: "Unique color samples for new fabric dyes", value: "creative" },
+                    { text: "A meteorite to display as a trophy", value: "bold" },
+                    { text: "Clean lines of energy for minimalist design", value: "minimalist" },
+                    { text: "Stories that connect past and present", value: "nostalgic" },
+                    { text: "Innovative materials for future fashion", value: "futuristic" }
+                ]
+            }
+        ];
+
+        // Three.js Variables
+        let scene, camera, renderer, controls;
+        let stars = [];
+        let constellations = [];
+        let currentPlanet = null;
+        let particles = [];
+
+        // DOM Elements
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+        const resultsSection = document.getElementById('resultsSection');
+        const personalityType = document.getElementById('personalityType');
+        const personalityDescription = document.getElementById('personalityDescription');
+        const recommendedItems = document.getElementById('recommendedItems');
+
+        // Initialize 3D Scene
+        function init3DScene() {
+            // Create scene
+            scene = new THREE.Scene();
+            scene.fog = new THREE.Fog(0x030313, 10, 100);
+
+            // Create camera
+            camera = new THREE.PerspectiveCamera(75, 900 / 500, 0.1, 1000);
+            camera.position.set(0, 5, 15);
+
+            // Create renderer
+            renderer = new THREE.WebGLRenderer({ 
+                canvas: document.getElementById('gameCanvas'),
+                antialias: true,
+                alpha: true
+            });
+            renderer.setSize(900, 500);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+            // Add controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.maxDistance = 50;
+            controls.minDistance = 5;
+            controls.maxPolarAngle = Math.PI / 2;
+
+            // Add lighting
+            const ambientLight = new THREE.AmbientLight(0x444444);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0x7c3aed, 0.8);
+            directionalLight.position.set(10, 10, 5);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+
+            const pointLight = new THREE.PointLight(0x06b6d4, 0.5, 100);
+            pointLight.position.set(-10, 5, -5);
+            scene.add(pointLight);
+
+            // Create stars
+            createStars();
+
+            // Create central planet
+            createCentralPlanet();
+
+            // Create orbiting particles
+            createOrbitingParticles();
+
+            // Start animation
+            animate();
+        }
+
+        // Create starfield
+        function createStars() {
+            const starGeometry = new THREE.BufferGeometry();
+            const starCount = 2000;
+            const positions = new Float32Array(starCount * 3);
+            const colors = new Float32Array(starCount * 3);
+            const sizes = new Float32Array(starCount);
+
+            for (let i = 0; i < starCount; i++) {
+                const i3 = i * 3;
+                
+                // Position
+                const radius = 40 + Math.random() * 60;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                
+                positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+                positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                positions[i3 + 2] = radius * Math.cos(phi);
+                
+                // Color
+                const colorVal = Math.random();
+                if (colorVal < 0.3) {
+                    colors[i3] = 0.49; // Purple
+                    colors[i3 + 1] = 0.23;
+                    colors[i3 + 2] = 0.93;
+                } else if (colorVal < 0.6) {
+                    colors[i3] = 0.02; // Cyan
+                    colors[i3 + 1] = 0.71;
+                    colors[i3 + 2] = 0.83;
+                } else {
+                    colors[i3] = 1.0; // Pink
+                    colors[i3 + 1] = 0.3;
+                    colors[i3 + 2] = 0.43;
+                }
+                
+                // Size
+                sizes[i] = Math.random() * 2;
+            }
+
+            starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            starGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            starGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+            const starMaterial = new THREE.PointsMaterial({
+                size: 0.1,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8
+            });
+
+            const starField = new THREE.Points(starGeometry, starMaterial);
+            scene.add(starField);
+        }
+
+        // Create central planet
+        function createCentralPlanet() {
+            const planetGeometry = new THREE.SphereGeometry(3, 32, 32);
+            
+            // Create gradient texture programmatically
+            const canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            
+            const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+            gradient.addColorStop(0, '#7c3aed');
+            gradient.addColorStop(0.5, '#06b6d4');
+            gradient.addColorStop(1, '#030313');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 256, 256);
+            
+            // Add some noise for texture
+            const imageData = ctx.getImageData(0, 0, 256, 256);
+            const data = imageData.data;
+            for (let i = 0; i < data.length; i += 4) {
+                const noise = Math.random() * 10;
+                data[i] = Math.min(255, data[i] + noise);
+                data[i + 1] = Math.min(255, data[i + 1] + noise);
+                data[i + 2] = Math.min(255, data[i + 2] + noise);
+            }
+            ctx.putImageData(imageData, 0, 0);
+            
+            const texture = new THREE.CanvasTexture(canvas);
+            
+            const planetMaterial = new THREE.MeshPhongMaterial({
+                map: texture,
+                shininess: 30,
+                emissive: 0x0a0a2a,
+                emissiveIntensity: 0.2
+            });
+            
+            currentPlanet = new THREE.Mesh(planetGeometry, planetMaterial);
+            currentPlanet.castShadow = true;
+            currentPlanet.receiveShadow = true;
+            scene.add(currentPlanet);
+            
+            // Add atmospheric glow
+            const glowGeometry = new THREE.SphereGeometry(3.2, 32, 32);
+            const glowMaterial = new THREE.MeshBasicMaterial({
+                color: 0x7c3aed,
+                transparent: true,
+                opacity: 0.1,
+                side: THREE.BackSide
+            });
+            const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+            scene.add(glow);
+        }
+
+        // Create orbiting particles
+        function createOrbitingParticles() {
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const size = 0.1 + Math.random() * 0.3;
+                const geometry = new THREE.SphereGeometry(size, 8, 8);
+                
+                // Random color based on game personality types
+                const colors = [0x7c3aed, 0x06b6d4, 0xff4d6d];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                const material = new THREE.MeshPhongMaterial({
+                    color: color,
+                    emissive: color,
+                    emissiveIntensity: 0.3,
+                    shininess: 100
+                });
+                
+                const particle = new THREE.Mesh(geometry, material);
+                
+                // Position in orbit
+                const orbitRadius = 5 + Math.random() * 10;
+                const angle = Math.random() * Math.PI * 2;
+                const height = (Math.random() - 0.5) * 8;
+                
+                particle.position.x = orbitRadius * Math.cos(angle);
+                particle.position.y = height;
+                particle.position.z = orbitRadius * Math.sin(angle);
+                
+                // Store orbit parameters
+                particle.userData = {
+                    orbitRadius: orbitRadius,
+                    angle: angle,
+                    speed: 0.01 + Math.random() * 0.02,
+                    height: height,
+                    verticalSpeed: (Math.random() - 0.5) * 0.005
+                };
+                
+                particle.castShadow = true;
+                scene.add(particle);
+                particles.push(particle);
+            }
+        }
+
+        // Animate scene
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Rotate planet
+            if (currentPlanet) {
+                currentPlanet.rotation.y += 0.005;
+            }
+            
+            // Update particles
+            particles.forEach(particle => {
+                const data = particle.userData;
+                data.angle += data.speed;
+                
+                particle.position.x = data.orbitRadius * Math.cos(data.angle);
+                particle.position.z = data.orbitRadius * Math.sin(data.angle);
+                
+                // Add slight vertical movement
+                particle.position.y += data.verticalSpeed;
+                if (Math.abs(particle.position.y) > 6) {
+                    data.verticalSpeed *= -1;
+                }
+                
+                // Pulsing effect
+                const scale = 1 + 0.1 * Math.sin(Date.now() * 0.001 + data.angle * 10);
+                particle.scale.set(scale, scale, scale);
+            });
+            
+            // Update controls
+            controls.update();
+            
+            // Render
+            renderer.render(scene, camera);
+        }
+
+        // Initialize game UI
+        function initGameUI() {
+            updateQuestion();
+            updateProgressBar();
+            updateButtons();
+            
+            // Event listeners for options
+            optionsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('game-option')) {
+                    const selectedOption = e.target;
+                    const allOptions = optionsContainer.querySelectorAll('.game-option');
+                    
+                    // Remove selected class from all options
+                    allOptions.forEach(option => option.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    selectedOption.classList.add('selected');
+                    
+                    // Enable next button
+                    nextBtn.disabled = false;
+                    
+                    // Store answer if not on start screen
+                    if (gameState.currentStep > 0) {
+                        const value = selectedOption.getAttribute('data-value');
+                        gameState.answers[gameState.currentStep - 1] = value;
+                        
+                        // Update personality score
+                        if (value === 'creative') gameState.personalityScore.creative++;
+                        if (value === 'bold') gameState.personalityScore.bold++;
+                        if (value === 'minimalist') gameState.personalityScore.minimalist++;
+                        if (value === 'nostalgic') gameState.personalityScore.nostalgic++;
+                        if (value === 'futuristic') gameState.personalityScore.futuristic++;
+                        
+                        // Create visual effect in 3D scene
+                        createAnswerEffect(value);
+                    }
+                }
+            });
+            
+            // Next button
+            nextBtn.addEventListener('click', () => {
+                if (gameState.currentStep === 0) {
+                    // Start the game
+                    gameState.currentStep = 1;
+                    updateQuestion();
+                    updateProgressBar();
+                    updateButtons();
+                    nextBtn.disabled = true;
+                } else if (gameState.currentStep < gameQuestions.length) {
+                    // Go to next question
+                    gameState.currentStep++;
+                    updateQuestion();
+                    updateProgressBar();
+                    updateButtons();
+                    nextBtn.disabled = true;
+                } else {
+                    // Show results
+                    showResults();
+                }
+            });
+            
+            // Previous button
+            prevBtn.addEventListener('click', () => {
+                if (gameState.currentStep > 1) {
+                    gameState.currentStep--;
+                    updateQuestion();
+                    updateProgressBar();
+                    updateButtons();
+                    nextBtn.disabled = false;
+                    
+                    // Re-select previous answer if exists
+                    const previousAnswer = gameState.answers[gameState.currentStep - 1];
+                    if (previousAnswer) {
+                        const allOptions = optionsContainer.querySelectorAll('.game-option');
+                        allOptions.forEach(option => {
+                            if (option.getAttribute('data-value') === previousAnswer) {
+                                option.classList.add('selected');
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        // Update question and options
+        function updateQuestion() {
+            if (gameState.currentStep === 0) {
+                questionText.textContent = "Welcome to the Personality Cosmos! Ready to begin your journey?";
+                optionsContainer.innerHTML = `
+                    <div class="game-option" data-value="start">Begin Cosmic Journey</div>
+                `;
+            } else {
+                const question = gameQuestions[gameState.currentStep - 1];
+                questionText.textContent = question.question;
+                
+                let optionsHTML = '';
+                question.options.forEach((option, index) => {
+                    optionsHTML += `
+                        <div class="game-option" data-value="${option.value}">
+                            ${option.text}
+                        </div>
+                    `;
+                });
+                optionsContainer.innerHTML = optionsHTML;
+                
+                // Re-select if answer exists
+                const answer = gameState.answers[gameState.currentStep - 1];
+                if (answer) {
+                    const allOptions = optionsContainer.querySelectorAll('.game-option');
+                    allOptions.forEach(option => {
+                        if (option.getAttribute('data-value') === answer) {
+                            option.classList.add('selected');
+                        }
+                    });
+                }
+            }
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progress = (gameState.currentStep / gameQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // Update buttons
+        function updateButtons() {
+            prevBtn.disabled = gameState.currentStep <= 1;
+            
+            if (gameState.currentStep === 0) {
+                nextBtn.textContent = "Start Journey";
+                nextBtn.disabled = false;
+            } else if (gameState.currentStep < gameQuestions.length) {
+                nextBtn.textContent = "Continue";
+            } else {
+                nextBtn.textContent = "Reveal My Cosmic Style";
+            }
+        }
+
+        // Create visual effect for answer
+        function createAnswerEffect(answerType) {
+            const colors = {
+                creative: 0x7c3aed,
+                bold: 0xff4d6d,
+                minimalist: 0xffffff,
+                nostalgic: 0xffb347,
+                futuristic: 0x06b6d4
+            };
+            
+            const color = colors[answerType];
+            
+            // Create a burst of particles
+            for (let i = 0; i < 20; i++) {
+                const geometry = new THREE.SphereGeometry(0.05, 4, 4);
+                const material = new THREE.MeshBasicMaterial({ color: color });
+                const particle = new THREE.Mesh(geometry, material);
+                
+                // Position near the planet
+                particle.position.set(
+                    (Math.random() - 0.5) * 2,
+                    (Math.random() - 0.5) * 2,
+                    (Math.random() - 0.5) * 2
+                ).normalize().multiplyScalar(4);
+                
+                // Random velocity
+                particle.userData.velocity = new THREE.Vector3(
+                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.1,
+                    (Math.random() - 0.5) * 0.1
+                );
+                
+                particle.userData.life = 100;
+                
+                scene.add(particle);
+                particles.push(particle);
+            }
+            
+            // Create a light flash
+            const flash = new THREE.PointLight(color, 2, 10);
+            flash.position.copy(camera.position);
+            scene.add(flash);
+            
+            // Remove flash after short time
+            setTimeout(() => {
+                scene.remove(flash);
+            }, 200);
+        }
+
+        // Show results
+        function showResults() {
+            // Calculate personality type
+            const personalityType = calculatePersonalityType();
+            
+            // Update results section
+            updateResults(personalityType);
+            
+            // Hide game section, show results
+            document.querySelector('.game-section').style.display = 'none';
+            resultsSection.style.display = 'block';
+            
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+            
+            // Create celebration effect in 3D scene
+            createCelebrationEffect();
+        }
+
+        // Calculate personality type
+        function calculatePersonalityType() {
+            // Find the dominant traits
+            const scores = gameState.personalityScore;
+            const maxScore = Math.max(
+                scores.creative,
+                scores.bold,
+                scores.minimalist,
+                scores.nostalgic,
+                scores.futuristic
+            );
+            
+            const dominantTraits = [];
+            if (scores.creative === maxScore) dominantTraits.push('creative');
+            if (scores.bold === maxScore) dominantTraits.push('bold');
+            if (scores.minimalist === maxScore) dominantTraits.push('minimalist');
+            if (scores.nostalgic === maxScore) dominantTraits.push('nostalgic');
+            if (scores.futuristic === maxScore) dominantTraits.push('futuristic');
+            
+            // Find matching personality type
+            let bestMatch = gameState.personalityTypes[0];
+            let bestMatchScore = 0;
+            
+            gameState.personalityTypes.forEach(type => {
+                let matchScore = 0;
+                type.traits.forEach(trait => {
+                    if (dominantTraits.includes(trait)) matchScore += 2;
+                    if (scores[trait] > 0) matchScore += 1;
+                });
+                
+                if (matchScore > bestMatchScore) {
+                    bestMatchScore = matchScore;
+                    bestMatch = type;
+                }
+            });
+            
+            return bestMatch;
+        }
+
+        // Update results section
+        function updateResults(personalityType) {
+            // Set personality type and description
+            document.getElementById('personalityType').textContent = personalityType.name;
+            document.getElementById('personalityDescription').textContent = personalityType.description;
+            
+            // Filter fashion items for this collection
+            const filteredItems = gameState.fashionItems.filter(
+                item => item.collection === personalityType.collection
+            );
+            
+            // Display recommended items
+            let itemsHTML = '';
+            filteredItems.forEach(item => {
+                itemsHTML += `
+                    <div class="item-card">
+                        <div class="item-img">
+                            <img src="${item.image}" alt="${item.name}">
+                        </div>
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-description" style="font-size: 0.9rem; color: var(--muted); margin-bottom: 10px;">${item.description}</div>
+                        <div class="item-price">${item.price}</div>
+                    </div>
+                `;
+            });
+            
+            // Add some additional items if we don't have enough
+            if (filteredItems.length < 3) {
+                const additionalItems = gameState.fashionItems
+                    .filter(item => item.collection !== personalityType.collection)
+                    .slice(0, 3 - filteredItems.length);
+                
+                additionalItems.forEach(item => {
+                    itemsHTML += `
+                        <div class="item-card">
+                            <div class="item-img">
+                                <img src="${item.image}" alt="${item.name}">
+                            </div>
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-description" style="font-size: 0.9rem; color: var(--muted); margin-bottom: 10px;">${item.description}</div>
+                            <div class="item-price">${item.price}</div>
+                        </div>
+                    `;
+                });
+            }
+            
+            recommendedItems.innerHTML = itemsHTML;
+            
+            // Update shop button to go to filtered collection
+            const shopBtn = document.querySelector('.discover-btn');
+            shopBtn.href = `#collection-${personalityType.collection.toLowerCase().replace(/\s+/g, '-')}`;
+        }
+
+        // Create celebration effect
+        function createCelebrationEffect() {
+            // Create a ring of light around the planet
+            const ringGeometry = new THREE.TorusGeometry(6, 0.1, 8, 100);
+            const ringMaterial = new THREE.MeshBasicMaterial({
+                color: 0x7c3aed,
+                transparent: true,
+                opacity: 0.5
+            });
+            const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+            ring.rotation.x = Math.PI / 2;
+            scene.add(ring);
+            
+            // Animate the ring
+            const ringAnimation = () => {
+                ring.rotation.z += 0.01;
+                ring.scale.setScalar(1 + 0.1 * Math.sin(Date.now() * 0.002));
+                requestAnimationFrame(ringAnimation);
+            };
+            ringAnimation();
+            
+            // Add shooting stars
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    createShootingStar();
+                }, i * 300);
+            }
+        }
+
+        // Create shooting star
+        function createShootingStar() {
+            const geometry = new THREE.SphereGeometry(0.1, 8, 8);
+            const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const star = new THREE.Mesh(geometry, material);
+            
+            // Random start position
+            const startX = (Math.random() - 0.5) * 30;
+            const startY = 10 + Math.random() * 10;
+            const startZ = (Math.random() - 0.5) * 30;
+            
+            star.position.set(startX, startY, startZ);
+            
+            scene.add(star);
+            
+            // Animate shooting star
+            const startTime = Date.now();
+            const duration = 2000;
+            
+            const animateShootingStar = () => {
+                const elapsed = Date.now() - startTime;
+                const progress = elapsed / duration;
+                
+                if (progress < 1) {
+                    // Move downward
+                    star.position.y = startY - progress * 20;
+                    
+                    // Add trail
+                    const trail = star.clone();
+                    trail.material = new THREE.MeshBasicMaterial({
+                        color: 0xffffff,
+                        transparent: true,
+                        opacity: 0.3
+                    });
+                    scene.add(trail);
+                    
+                    // Remove trail after short time
+                    setTimeout(() => {
+                        scene.remove(trail);
+                    }, 100);
+                    
+                    requestAnimationFrame(animateShootingStar);
+                } else {
+                    scene.remove(star);
+                }
+            };
+            
+            animateShootingStar();
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            init3DScene();
+            initGameUI();
+            
+            // Header scroll effect
+            window.addEventListener('scroll', () => {
+                const header = document.getElementById('header');
+                if (window.scrollY > 100) {
+                    header.style.padding = '15px 5%';
+                    header.style.backgroundColor = 'rgba(3, 3, 19, 0.95)';
+                } else {
+                    header.style.padding = '20px 5%';
+                    header.style.backgroundColor = 'rgba(3, 3, 19, 0.85)';
+                }
+            });
+
+            // Scroll animation for fade-up elements
+            const fadeElements = document.querySelectorAll('.fade-up');
+            
+            const appearOnScroll = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const delay = entry.target.dataset.delay || 0;
+                        setTimeout(() => {
+                            entry.target.classList.add('in-view');
+                        }, delay * 1000);
+                        appearOnScroll.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            fadeElements.forEach(element => {
+                appearOnScroll.observe(element);
+            });
+
+            // Parallax effect
+            const parallax = document.getElementById('parallax');
+            if (parallax) {
+                document.addEventListener('mousemove', (e) => {
+                    const x = (e.clientX / window.innerWidth - 0.5) * 10;
+                    const y = (e.clientY / window.innerHeight - 0.5) * 10;
+                    parallax.querySelectorAll('.layer').forEach((layer, i) => {
+                        layer.style.transform = `translate(${x * (i+1)}px, ${y * (i+1)}px)`;
+                    });
+                });
+            }
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = 900 / 500;
+                camera.updateProjectionMatrix();
+                renderer.setSize(900, 500);
+            });
+        });
+    </script>
+</body>
+</html>
