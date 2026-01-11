@@ -406,6 +406,7 @@
 
         /* 3D Canvas Container */
         .canvas-container {
+            
             width: 100%;
             max-width: 900px;
             height: 500px;
@@ -444,6 +445,7 @@
             padding: 20px;
             border: 1px solid var(--glass-border);
             pointer-events: all;
+            
         }
 
         .game-question {
@@ -882,6 +884,12 @@
                 height: 300px;
             }
         }
+        .logo img {
+    height: 40px; /* Adjust as needed */
+    width: auto;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
     </style>
 </head>
 <body>
@@ -895,8 +903,9 @@
 
     <!-- Header -->
     <header id="header">
-        <a href="#" class="logo">URBAN<span>PULSE</span></a>
-        
+<a href="#" class="logo">
+    <img src="logo.png" alt="URBAN PULSE" id="logo-image">
+</a>        
         <nav>
             <ul>
                 <li><a href="#">WE ARE UNIQUE</a></li>
@@ -975,8 +984,8 @@
     <section class="game-section" id="game">
         <div class="game-container">
             <div class="game-intro fade-up">
-                <h2>Discover Your Cosmic Style</h2>
-                <p>Navigate through a 3D universe of personality traits. Your choices will create a unique constellation that reveals your true style identity and perfectly matched URBAN PULSE pieces.</p>
+                <h2>DICOVER YOUR NEVELTY!</h2>
+                <p>Navigate through a 3D universe of personality traits. Your choices will create a unique constellation that reveals your true style identity and perfectly matched STARS' apparel.</p>
             </div>
             
             <div class="canvas-container fade-up" data-delay="0.2">
@@ -1044,7 +1053,7 @@
     <footer>
         <div class="footer-content">
             <div class="footer-column">
-                <h3>URBAN PULSE</h3>
+                <h3>STARSApparel</h3>
                 <p>Streetwear for the culture. Apparel for the bold. Fashion for the future.</p>
                 <div class="social-links">
                     <a href="https://www.instagram.com/stars.kenya/"><i class="fab fa-instagram"></i></a>
