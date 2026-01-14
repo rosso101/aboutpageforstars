@@ -1086,7 +1086,7 @@
                 </div>
             </div>
             
-            <a href="#" class="cta-button discover-btn pulse">
+            <a href="https://stars-three-bay.vercel.app/?utm_source=personality_quiz&utm_medium=website&utm_campaign=cosmic_style_profile" class="cta-button discover-btn pulse" id="exploreCollectionBtn">
                 <i class="fas fa-shopping-bag"></i> EXPLORE YOUR COLLECTION
             </a>
             
@@ -1176,7 +1176,7 @@ fashionItems: [
     {
         name: "WTOU Design",
         price: "1200",
-        image: "./WTOU.jpeg", // or "/images/hoodie.jpg"
+        image: "./WTOU.jpeg",
         collection: "Celestial Dreams",
         description: "Gradient dye hoodie with cosmic pattern"
     },
@@ -1194,14 +1194,41 @@ fashionItems: [
         collection: "Orbit Essentials",
         description: "Minimalist tee with orbital graphic"
     },
-       {
-        name: "Garden  Theme",
+    {
+        name: "Garden Theme",
         price: "1200/=",
         image: "./GD.jpeg",
         collection: "Orbit Essentials",
         description: "Minimalist tee with orbital graphic"
     },
-    // ... rest of items with similar image paths
+    {
+        name: "Galaxy Hoodie",
+        price: "1500/=",
+        image: "./placeholder.jpg",
+        collection: "Celestial Dreams",
+        description: "Purple galaxy print hoodie"
+    },
+    {
+        name: "Solar Jacket",
+        price: "1800/=",
+        image: "./placeholder.jpg",
+        collection: "Solar Flare",
+        description: "Orange reflective windbreaker"
+    },
+    {
+        name: "Nebula T-Shirt",
+        price: "800/=",
+        image: "./placeholder.jpg",
+        collection: "Stellar Voyager",
+        description: "Colorful nebula print t-shirt"
+    },
+    {
+        name: "Quantum Pants",
+        price: "1400/=",
+        image: "./placeholder.jpg",
+        collection: "Quantum Edge",
+        description: "Tech fabric cargo pants"
+    }
 ]
         };
 
@@ -1276,6 +1303,7 @@ fashionItems: [
         const personalityType = document.getElementById('personalityType');
         const personalityDescription = document.getElementById('personalityDescription');
         const recommendedItems = document.getElementById('recommendedItems');
+        const exploreCollectionBtn = document.getElementById('exploreCollectionBtn');
 
         // Initialize 3D Scene
         function init3DScene() {
@@ -1712,10 +1740,10 @@ fashionItems: [
         // Show results
         function showResults() {
             // Calculate personality type
-            const personalityType = calculatePersonalityType();
+            const personalityTypeResult = calculatePersonalityType();
             
             // Update results section
-            updateResults(personalityType);
+            updateResults(personalityTypeResult);
             
             // Hide game section, show results
             document.querySelector('.game-section').style.display = 'none';
@@ -1768,14 +1796,14 @@ fashionItems: [
         }
 
         // Update results section
-        function updateResults(personalityType) {
+        function updateResults(personalityTypeResult) {
             // Set personality type and description
-            document.getElementById('personalityType').textContent = personalityType.name;
-            document.getElementById('personalityDescription').textContent = personalityType.description;
+            personalityType.textContent = personalityTypeResult.name;
+            personalityDescription.textContent = personalityTypeResult.description;
             
             // Filter fashion items for this collection
             const filteredItems = gameState.fashionItems.filter(
-                item => item.collection === personalityType.collection
+                item => item.collection === personalityTypeResult.collection
             );
             
             // Display recommended items
@@ -1796,7 +1824,7 @@ fashionItems: [
             // Add some additional items if we don't have enough
             if (filteredItems.length < 3) {
                 const additionalItems = gameState.fashionItems
-                    .filter(item => item.collection !== personalityType.collection)
+                    .filter(item => item.collection !== personalityTypeResult.collection)
                     .slice(0, 3 - filteredItems.length);
                 
                 additionalItems.forEach(item => {
@@ -1815,9 +1843,18 @@ fashionItems: [
             
             recommendedItems.innerHTML = itemsHTML;
             
-            // Update shop button to go to filtered collection
-            const shopBtn = document.querySelector('.discover-btn');
-            shopBtn.href = `#collection-${personalityType.collection.toLowerCase().replace(/\s+/g, '-')}`;
+            // Update shop button to go to your collection website with UTM parameters
+            const utmParams = new URLSearchParams({
+                utm_source: 'personality_quiz',
+                utm_medium: 'website',
+                utm_campaign: 'cosmic_style_profile',
+                personality: personalityTypeResult.name,
+                collection: personalityTypeResult.collection,
+                traits: personalityTypeResult.traits.join(',')
+            }).toString();
+            
+            exploreCollectionBtn.href = `https://stars-three-bay.vercel.app/?${utmParams}`;
+            exploreCollectionBtn.innerHTML = `<i class="fas fa-external-link-alt"></i> SHOP ${personalityTypeResult.collection.toUpperCase()} COLLECTION`;
         }
 
         // Create celebration effect
