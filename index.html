@@ -283,6 +283,124 @@
             transform: scale(1.05);
         }
 
+        /* Cosmic Text Animation Section - NEW ADDITION */
+        .cosmic-text-section {
+            padding: 120px 5%;
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cosmic-text-container {
+            width: 100%;
+            max-width: 1200px;
+            height: 400px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .cosmic-text-orbit {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: orbit-rotation 40s linear infinite;
+        }
+
+        .cosmic-text-element {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: center center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            font-size: 4.5rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            opacity: 0;
+            filter: blur(10px);
+            transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+            text-shadow: 0 0 30px currentColor;
+            will-change: transform, opacity, filter;
+            text-align: center;
+            width: max-content;
+        }
+
+        .cosmic-text-element.active {
+            opacity: 1;
+            filter: blur(0);
+            text-shadow: 0 0 40px currentColor,
+                         0 0 80px currentColor,
+                         0 0 120px currentColor;
+            animation: text-pulse 4s ease-in-out infinite;
+        }
+
+        .cosmic-text-element.fading {
+            opacity: 0;
+            filter: blur(15px) brightness(2);
+        }
+
+        /* Cosmic orb effects */
+        .cosmic-orb {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            filter: blur(40px);
+            opacity: 0;
+            transform: scale(0);
+            transition: all 2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .cosmic-orb.active {
+            opacity: 0.7;
+            transform: scale(1);
+        }
+
+        /* Particle effects */
+        .cosmic-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            mix-blend-mode: screen;
+            filter: blur(1px);
+        }
+
+        @keyframes orbit-rotation {
+            0% { transform: rotateY(0deg) rotateX(10deg); }
+            100% { transform: rotateY(360deg) rotateX(10deg); }
+        }
+
+        @keyframes text-pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        @keyframes particle-burst {
+            0% {
+                opacity: 0;
+                transform: translate(0, 0) scale(0);
+            }
+            20% {
+                opacity: 1;
+                transform: translate(var(--tx), var(--ty)) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(0);
+            }
+        }
+
         /* Values Section */
         .values-section {
             padding: 100px 5%;
@@ -856,6 +974,16 @@
                 font-size: 2.5rem;
             }
             
+            /* Cosmic Text Animation Responsive */
+            .cosmic-text-element {
+                font-size: 3rem;
+                letter-spacing: 4px;
+            }
+            
+            .cosmic-text-container {
+                height: 300px;
+            }
+            
             /* Ensure canvas fits completely on tablet */
             .canvas-container {
                 height: 450px;
@@ -898,6 +1026,21 @@
                 font-size: 2rem;
             }
             
+            /* Cosmic Text Animation Responsive */
+            .cosmic-text-section {
+                padding: 80px 5%;
+                min-height: 50vh;
+            }
+            
+            .cosmic-text-element {
+                font-size: 2.2rem;
+                letter-spacing: 3px;
+            }
+            
+            .cosmic-text-container {
+                height: 250px;
+            }
+            
             /* Ensure full visibility on mobile landscape */
             .canvas-container {
                 height: 400px;
@@ -936,6 +1079,21 @@
             
             .values-container {
                 grid-template-columns: 1fr;
+            }
+            
+            /* Cosmic Text Animation Responsive */
+            .cosmic-text-section {
+                padding: 60px 5%;
+                min-height: 40vh;
+            }
+            
+            .cosmic-text-element {
+                font-size: 1.8rem;
+                letter-spacing: 2px;
+            }
+            
+            .cosmic-text-container {
+                height: 200px;
             }
             
             /* Ensure full visibility on mobile portrait */
@@ -994,6 +1152,16 @@
                 font-size: 1rem;
                 min-height: 90px;
             }
+            
+            /* Cosmic Text Animation Responsive */
+            .cosmic-text-element {
+                font-size: 1.5rem;
+                letter-spacing: 1px;
+            }
+            
+            .cosmic-text-container {
+                height: 180px;
+            }
         }
         
         /* Ensure canvas is always perfectly centered */
@@ -1029,14 +1197,13 @@
         </a>        
         <nav>
             <ul>
-                <li><a href="#">WE ARE UNIQUE</a></li>
-                <li><a href="#">WE ARE TOGETHER</a></li>
-                <li><a href="#" class="active"> WE ARE STARS!</a></li>
-                <li><a href="#">WE STAND OUT</a></li>
-                <li><a href="#"> WE CONVEY</a></li>
+                <li><a href="#">INDIVIDUAL BY DESIGN</a></li>
+                <li><a href="#">UNITED IN PURPOSE</a></li>
+                <li><a href="#" class="active">WE ARE STARS</a></li>
+                <li><a href="#">BUILT TO STAND OUT</a></li>
+                <li><a href="#">WE EXPRESS</a></li>
             </ul>
         </nav>
-        
         <button class="mobile-menu-btn" id="mobileMenuBtn">
             <i class="fas fa-bars"></i>
         </button>
@@ -1048,7 +1215,7 @@
             <h1>WELCOME TO</h1>
             <h1><span class="accent">OUR UNIVERSE</span></h1>
             <h2>Were you really that curious?</h2>
-            <p>Explore your personality constellation and discover fashion that truly reflects who you are.</p>
+            <p>Welcome to our Universe, where your unique nature links with others like you!</p>
             <a href="#game" class="cta-button fade-up" data-delay="0.3">
                 <i class="fas fa-rocket"></i> Dicover your novelty!!!
             </a>
@@ -1066,10 +1233,17 @@
                 <p>Our Personality Cosmos Explorer helps you navigate this universe, revealing fashion that aligns with your authentic self.</p>
             </div>
             <div class="about-image fade-up" data-delay="0.2">
-              <div class="image-frame">
-                <img src="./images/ephraim.jpg" alt="Urban Pulse streetwear collection">
-              </div>
+                <div class="image-frame">
+                    <img src="./images/ephraim.jpg" alt="Urban Pulse streetwear collection">
+                </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Cosmic Text Animation Section - NEW ADDITION -->
+    <section class="cosmic-text-section fade-up" id="cosmicText">
+        <div class="cosmic-text-container">
+            <div class="cosmic-text-orbit" id="cosmicTextOrbit"></div>
         </div>
     </section>
 
@@ -1202,6 +1376,200 @@
     </footer>
 
     <script>
+        // ============================================
+        // Cosmic Text Animation - NEW FEATURE
+        // ============================================
+        class CosmicTextAnimation {
+            constructor() {
+                this.container = document.getElementById('cosmicTextOrbit');
+                this.phrases = [
+                    { text: "YOU ARE UNIQUE", color: "#ff4d6d" },
+                    { text: "EMBRACE YOUR GLOW", color: "#7c3aed" },
+                    { text: "SHINE LIKE STARS", color: "#06b6d4" },
+                    { text: "BE BOLDLY YOU", color: "#ffb347" },
+                    { text: "CREATE YOUR SPACE", color: "#9d4edd" },
+                    { text: "DEFY GRAVITY", color: "#4cc9f0" },
+                    { text: "YOUR LIGHT MATTERS", color: "#f72585" }
+                ];
+                this.currentIndex = 0;
+                this.isAnimating = false;
+                this.orbElements = [];
+                this.particles = [];
+                this.init();
+            }
+
+            init() {
+                // Create text elements for each phrase
+                this.phrases.forEach((phrase, index) => {
+                    const textElement = document.createElement('div');
+                    textElement.className = 'cosmic-text-element';
+                    textElement.textContent = phrase.text;
+                    textElement.style.color = phrase.color;
+                    textElement.style.transform = `translate(-50%, -50%) rotateY(${index * (360 / this.phrases.length)}deg) translateZ(350px)`;
+                    this.container.appendChild(textElement);
+                });
+
+                // Start the animation cycle
+                setTimeout(() => this.showNextPhrase(), 1000);
+                
+                // Create initial orbs
+                this.createOrbs();
+                
+                // Start particle animation
+                this.animateParticles();
+            }
+
+            createOrbs() {
+                // Create colored orbs that follow the text
+                for (let i = 0; i < 5; i++) {
+                    const orb = document.createElement('div');
+                    orb.className = 'cosmic-orb';
+                    orb.style.width = orb.style.height = `${200 + Math.random() * 200}px`;
+                    orb.style.background = `radial-gradient(circle at 30% 30%, ${this.getRandomColor()}, transparent 70%)`;
+                    orb.style.left = `${Math.random() * 100}%`;
+                    orb.style.top = `${Math.random() * 100}%`;
+                    this.container.appendChild(orb);
+                    this.orbElements.push(orb);
+                }
+            }
+
+            getRandomColor() {
+                const colors = [
+                    'rgba(124, 58, 237, 0.6)',
+                    'rgba(6, 182, 212, 0.6)',
+                    'rgba(255, 77, 109, 0.6)',
+                    'rgba(157, 78, 221, 0.6)',
+                    'rgba(76, 201, 240, 0.6)'
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            showNextPhrase() {
+                if (this.isAnimating) return;
+                this.isAnimating = true;
+
+                const textElements = this.container.querySelectorAll('.cosmic-text-element');
+                const currentElement = textElements[this.currentIndex];
+                
+                // Fade out current if exists
+                if (this.currentIndex > 0) {
+                    const prevElement = textElements[this.currentIndex - 1];
+                    prevElement.classList.remove('active');
+                    prevElement.classList.add('fading');
+                    
+                    // Hide orb
+                    if (this.orbElements[this.currentIndex - 1]) {
+                        this.orbElements[this.currentIndex - 1].classList.remove('active');
+                    }
+                }
+
+                // Show new phrase
+                setTimeout(() => {
+                    currentElement.classList.add('active');
+                    currentElement.classList.remove('fading');
+                    
+                    // Activate orb
+                    if (this.orbElements[this.currentIndex]) {
+                        const orb = this.orbElements[this.currentIndex];
+                        orb.style.background = `radial-gradient(circle at 30% 30%, ${this.phrases[this.currentIndex].color}66, transparent 70%)`;
+                        orb.classList.add('active');
+                    }
+
+                    // Create particle burst
+                    this.createParticleBurst(currentElement.textContent, this.phrases[this.currentIndex].color);
+                    
+                    this.isAnimating = false;
+                }, 800);
+
+                // Update index for next phrase
+                this.currentIndex = (this.currentIndex + 1) % this.phrases.length;
+
+                // Schedule next phrase
+                setTimeout(() => this.showNextPhrase(), 3000);
+            }
+
+            createParticleBurst(text, color) {
+                const particleCount = 50;
+                const container = this.container;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'cosmic-particle';
+                    particle.style.backgroundColor = color;
+                    particle.style.left = '50%';
+                    particle.style.top = '50%';
+                    particle.style.setProperty('--tx', `${(Math.random() - 0.5) * 200}px`);
+                    particle.style.setProperty('--ty', `${(Math.random() - 0.5) * 200}px`);
+                    
+                    container.appendChild(particle);
+                    
+                    // Animate particle
+                    particle.style.animation = `particle-burst ${1 + Math.random()}s ease-out forwards`;
+                    
+                    // Remove particle after animation
+                    setTimeout(() => {
+                        if (particle.parentNode === container) {
+                            container.removeChild(particle);
+                        }
+                    }, 2000);
+                }
+            }
+
+            animateParticles() {
+                // Create floating particles
+                const particleCount = 30;
+                const container = this.container;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'cosmic-particle';
+                    particle.style.width = particle.style.height = `${1 + Math.random() * 3}px`;
+                    particle.style.backgroundColor = this.getRandomColor();
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    particle.style.opacity = '0.3';
+                    
+                    container.appendChild(particle);
+                    this.particles.push({
+                        element: particle,
+                        x: Math.random() * 100,
+                        y: Math.random() * 100,
+                        speedX: (Math.random() - 0.5) * 0.2,
+                        speedY: (Math.random() - 0.5) * 0.2,
+                        opacity: 0.3
+                    });
+                }
+
+                // Animate particles
+                const animate = () => {
+                    this.particles.forEach(p => {
+                        p.x += p.speedX;
+                        p.y += p.speedY;
+                        
+                        // Bounce off edges
+                        if (p.x < 0 || p.x > 100) p.speedX *= -1;
+                        if (p.y < 0 || p.y > 100) p.speedY *= -1;
+                        
+                        // Keep within bounds
+                        p.x = Math.max(0, Math.min(100, p.x));
+                        p.y = Math.max(0, Math.min(100, p.y));
+                        
+                        // Update position
+                        p.element.style.left = `${p.x}%`;
+                        p.element.style.top = `${p.y}%`;
+                        
+                        // Pulsing opacity
+                        p.opacity = 0.2 + 0.2 * Math.sin(Date.now() * 0.001 + p.x);
+                        p.element.style.opacity = p.opacity;
+                    });
+                    
+                    requestAnimationFrame(animate);
+                };
+                
+                animate();
+            }
+        }
+
         // Game State
         let gameState = {
             currentStep: 0,
@@ -2054,6 +2422,9 @@
 
         // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Cosmic Text Animation
+            new CosmicTextAnimation();
+            
             // Wait a bit for DOM to be fully ready
             setTimeout(() => {
                 init3DScene();
