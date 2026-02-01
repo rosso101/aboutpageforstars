@@ -7,7 +7,11 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="shortcut icon" href="favicon.ico">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#030313">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>STARSApparel | About Us</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,6 +40,12 @@
             box-sizing: border-box;
         }
 
+        html {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: radial-gradient(1200px 600px at 10% 10%, rgba(124, 58, 237, 0.09), transparent 6%),
@@ -44,12 +54,16 @@
             color: #eaf2ff;
             overflow-x: hidden;
             line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         h1, h2, h3, h4 {
             font-family: 'Orbitron', sans-serif;
             letter-spacing: 1px;
             text-transform: uppercase;
+            word-wrap: break-word;
         }
 
         .accent {
@@ -57,6 +71,51 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .spinner-ring {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(124, 58, 237, 0.1);
+            border-top: 4px solid var(--neon1);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner-text {
+            color: var(--muted);
+            font-size: 1rem;
+            text-align: center;
+            max-width: 300px;
+            padding: 0 20px;
         }
 
         /* Header & Navigation */
@@ -72,6 +131,12 @@
             background: rgba(3, 3, 19, 0.85);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            padding: 15px 5%;
+            background: rgba(3, 3, 19, 0.95);
         }
 
         .logo {
@@ -80,19 +145,22 @@
             font-weight: 700;
             color: #eaf2ff;
             text-decoration: none;
+            display: flex;
+            align-items: center;
         }
 
-        .logo span {
-            background: linear-gradient(90deg, var(--neon2), var(--neon1));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .logo img {
+            height: 40px;
+            width: auto;
+            max-width: 180px;
+            object-fit: contain;
+            transition: all 0.3s ease;
         }
 
         nav ul {
             display: flex;
             list-style: none;
-            gap: 30px;
+            gap: 20px;
             align-items: center;
         }
 
@@ -100,10 +168,11 @@
             color: var(--muted);
             text-decoration: none;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 14px;
             transition: all 0.3s;
             padding: 8px 12px;
             border-radius: 10px;
+            white-space: nowrap;
         }
 
         nav a:hover {
@@ -125,10 +194,27 @@
             color: white;
             font-size: 20px;
             cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             backdrop-filter: blur(6px);
+            z-index: 1001;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-close-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1002;
+            display: none;
         }
 
         /* Hero Section */
@@ -145,6 +231,7 @@
 
         .hero-content {
             max-width: 900px;
+            width: 100%;
             z-index: 2;
             padding: 60px 40px;
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
@@ -152,7 +239,8 @@
             box-shadow: 0 10px 40px rgba(2, 6, 23, 0.6);
             border: 1px solid var(--glass-border);
             position: relative;
-            overflow: visible;
+            overflow: hidden;
+            margin: 0 20px;
         }
 
         .hero-content::before {
@@ -165,10 +253,16 @@
         }
 
         .hero h1 {
-            font-size: 4.5rem;
+            font-size: 3.5rem;
             margin-bottom: 20px;
-            line-height: 1;
+            line-height: 1.1;
             text-shadow: 0 0 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .hero h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--muted);
         }
 
         .hero p {
@@ -178,28 +272,44 @@
             color: var(--muted);
         }
 
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
         .cta-button {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
-            padding: 15px 40px;
+            padding: 16px 35px;
             background: linear-gradient(90deg, var(--neon1), var(--neon2));
             color: #030313;
             text-decoration: none;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             border-radius: 12px;
             transition: all 0.3s ease;
             border: none;
             box-shadow: 0 10px 40px rgba(124, 58, 237, 0.12);
             backdrop-filter: blur(6px);
             cursor: pointer;
+            font-size: 0.95rem;
+            min-width: 200px;
+            text-align: center;
         }
 
         .cta-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 50px rgba(124, 58, 237, 0.25);
+        }
+
+        .cta-button.secondary {
+            background: linear-gradient(90deg, var(--neon3), var(--neon1));
         }
 
         /* About Section */
@@ -283,9 +393,9 @@
             transform: scale(1.05);
         }
 
-        /* Cosmic Text Animation Section - NEW ADDITION */
+        /* Cosmic Text Animation Section */
         .cosmic-text-section {
-            padding: 120px 5%;
+            padding: 100px 5%;
             background: transparent;
             position: relative;
             overflow: hidden;
@@ -321,9 +431,9 @@
             transform-origin: center center;
             font-family: 'Orbitron', sans-serif;
             font-weight: 800;
-            font-size: 4.5rem;
+            font-size: 4rem;
             text-transform: uppercase;
-            letter-spacing: 6px;
+            letter-spacing: 4px;
             opacity: 0;
             filter: blur(10px);
             transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
@@ -331,6 +441,7 @@
             will-change: transform, opacity, filter;
             text-align: center;
             width: max-content;
+            max-width: 90vw;
         }
 
         .cosmic-text-element.active {
@@ -489,9 +600,17 @@
 
         .value-card p {
             color: var(--muted);
+            line-height: 1.8;
         }
 
-        /* Interactive Game Section - FIXED FOR FULL VISIBILITY */
+        /* Values CTA Section */
+        .values-cta {
+            text-align: center;
+            margin-top: 60px;
+            width: 100%;
+        }
+
+        /* Interactive Game Section */
         .game-section {
             padding: 100px 5%;
             background: transparent;
@@ -522,20 +641,22 @@
         }
 
         .game-intro h2 {
-            font-size: 3.5rem;
+            font-size: 3rem;
             margin-bottom: 20px;
             background: linear-gradient(90deg, var(--neon1), var(--neon2), var(--neon3));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            line-height: 1.2;
         }
 
         .game-intro p {
             font-size: 1.2rem;
             color: var(--muted);
+            line-height: 1.8;
         }
 
-        /* 3D Canvas Container - FIXED FOR FULL VISIBILITY */
+        /* 3D Canvas Container */
         .canvas-container {
             width: 100%;
             max-width: 900px;
@@ -547,15 +668,22 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             background: rgba(3, 3, 19, 0.3);
             margin-bottom: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         #gameCanvas {
             width: 100%;
             height: 100%;
             display: block;
+            touch-action: none; /* Prevent default touch behaviors */
+        }
+
+        .fallback-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
         }
 
         /* Game Panel */
@@ -595,6 +723,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            line-height: 1.4;
+            padding: 0 10px;
         }
 
         .game-options {
@@ -616,6 +746,8 @@
             transition: all 0.3s ease;
             text-align: center;
             font-size: 1.1rem;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .game-option:hover {
@@ -636,6 +768,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 20px;
         }
 
         .game-btn {
@@ -650,7 +783,10 @@
             font-size: 1rem;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
+            min-width: 160px;
+            user-select: none;
         }
 
         .game-btn:hover:not(:disabled) {
@@ -661,6 +797,7 @@
         .game-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none !important;
         }
 
         .game-instructions {
@@ -668,18 +805,22 @@
             max-width: 700px;
             color: var(--muted);
             margin-top: 40px;
-            padding: 20px;
+            padding: 25px;
             background: rgba(255, 255, 255, 0.02);
             border-radius: var(--radius);
             border: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .game-instructions p {
-            margin: 10px 0;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
+            font-size: 1rem;
         }
 
         /* Results Section */
@@ -711,18 +852,20 @@
         }
 
         .results-title {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 30px;
             background: linear-gradient(90deg, var(--neon1), var(--neon2), var(--neon3));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
+            line-height: 1.2;
         }
 
         .personality-type {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 20px;
             color: var(--neon2);
+            line-height: 1.2;
         }
 
         .personality-description {
@@ -732,6 +875,7 @@
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
+            line-height: 1.8;
         }
 
         .fashion-recommendation {
@@ -789,17 +933,20 @@
             font-weight: 700;
             margin-bottom: 10px;
             color: white;
+            font-size: 1.1rem;
         }
 
         .item-price {
             color: var(--neon2);
             font-weight: 600;
+            font-size: 1.2rem;
         }
 
         .discover-btn {
             margin-top: 30px;
-            padding: 15px 50px;
+            padding: 18px 50px;
             font-size: 1.1rem;
+            min-width: 300px;
         }
 
         /* Footer */
@@ -832,6 +979,7 @@
         .footer-column p {
             color: var(--muted);
             margin-bottom: 20px;
+            line-height: 1.8;
         }
 
         .social-links {
@@ -844,14 +992,15 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: rgba(255, 255, 255, 0.05);
             color: white;
             border-radius: 50%;
             transition: all 0.3s ease;
             text-decoration: none;
             border: 1px solid var(--glass-border);
+            font-size: 1.2rem;
         }
 
         .social-links a:hover {
@@ -879,12 +1028,6 @@
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
-        }
-
-        @keyframes starTwinkle {
-            0% { opacity: 0.3; }
-            50% { opacity: 1; }
-            100% { opacity: 0.3; }
         }
 
         .float {
@@ -927,68 +1070,121 @@
             filter: blur(18px);
         }
 
-        /* Responsive - FIXED FOR FULL VISIBILITY */
-        @media (max-width: 992px) {
+        /* Safe area handling */
+        @supports (padding: max(0px)) {
+            body, header, .hero, .about-section, .game-section, .cosmic-text-section, .results-section, .values-section, footer {
+                padding-left: max(20px, env(safe-area-inset-left));
+                padding-right: max(20px, env(safe-area-inset-right));
+            }
+            
+            .hero-content, .game-panel-container, .results-container, .canvas-container {
+                margin-left: max(0px, env(safe-area-inset-left));
+                margin-right: max(0px, env(safe-area-inset-right));
+            }
+            
+            header {
+                padding-top: max(20px, env(safe-area-inset-top));
+            }
+        }
+
+        /* Responsive Design */
+        /* Large tablets and small laptops */
+        @media (max-width: 1200px) {
             .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .cosmic-text-element {
                 font-size: 3.5rem;
+            }
+        }
+
+        /* Tablets */
+        @media (max-width: 992px) {
+            .hero {
+                padding: 90px 20px 40px;
+                min-height: 90vh;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.6rem;
+            }
+            
+            .hero-content {
+                padding: 40px 30px;
             }
             
             nav ul {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(3, 3, 19, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
                 display: none;
+                padding: 80px 20px 40px;
+            }
+            
+            nav ul.active {
+                display: flex;
+                animation: slideIn 0.3s ease-out;
+            }
+            
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            nav ul li {
+                margin: 15px 0;
+                width: 100%;
+                text-align: center;
+            }
+            
+            nav ul a {
+                display: block;
+                padding: 18px 20px;
+                font-size: 18px;
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
             }
             
             .mobile-menu-btn {
                 display: flex;
-                align-items: center;
-                justify-content: center;
             }
             
-            .mobile-menu {
-                position: fixed;
-                top: 80px;
-                left: 0;
-                width: 100%;
-                background: rgba(3, 3, 19, 0.95);
-                padding: 20px;
-                display: none;
+            .mobile-close-btn {
+                display: block;
+            }
+            
+            .about-content {
                 flex-direction: column;
-                align-items: center;
-                z-index: 999;
-                backdrop-filter: blur(20px);
-                border-bottom: 1px solid var(--glass-border);
             }
             
-            .mobile-menu.active {
-                display: flex;
-            }
-            
-            .mobile-menu li {
-                margin: 15px 0;
-            }
-            
-            .mobile-menu a {
-                font-size: 18px;
-            }
-            
-            .game-intro h2 {
-                font-size: 2.5rem;
-            }
-            
-            /* Cosmic Text Animation Responsive */
-            .cosmic-text-element {
-                font-size: 3rem;
-                letter-spacing: 4px;
-            }
-            
-            .cosmic-text-container {
-                height: 300px;
-            }
-            
-            /* Ensure canvas fits completely on tablet */
             .canvas-container {
                 height: 450px;
                 max-width: 95%;
-                margin: 0 auto;
+                margin: 0 auto 30px;
             }
             
             .game-panel-container {
@@ -996,37 +1192,89 @@
                 margin: 0 auto;
             }
             
-            .game-option {
-                min-width: 140px;
+            .cosmic-text-element {
+                font-size: 3rem;
+                letter-spacing: 3px;
             }
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
+            
+            .cosmic-text-container {
+                height: 350px;
+            }
+            
+            .game-intro h2 {
                 font-size: 2.5rem;
             }
             
+            .recommended-items {
+                gap: 20px;
+            }
+            
+            .item-card {
+                width: 180px;
+            }
+        }
+
+        /* Small tablets and large phones */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 80px 15px 30px;
+                min-height: 85vh;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.4rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .hero-content {
+                padding: 35px 25px;
+                margin: 0 10px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-button {
+                width: 100%;
+                max-width: 300px;
+                padding: 18px 25px;
+            }
+            
             .section-title {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+                margin-bottom: 50px;
+            }
+            
+            .about-text {
+                padding: 30px;
             }
             
             .about-text h3 {
                 font-size: 1.8rem;
             }
             
-            .hero-content {
-                padding: 40px 20px;
+            .image-frame {
+                height: 400px;
             }
             
-            .results-title {
-                font-size: 2.5rem;
+            .values-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
             }
             
-            .personality-type {
-                font-size: 2rem;
+            .value-card {
+                padding: 30px 25px;
             }
             
-            /* Cosmic Text Animation Responsive */
             .cosmic-text-section {
                 padding: 80px 5%;
                 min-height: 50vh;
@@ -1034,82 +1282,37 @@
             
             .cosmic-text-element {
                 font-size: 2.2rem;
-                letter-spacing: 3px;
+                letter-spacing: 2px;
             }
             
             .cosmic-text-container {
-                height: 250px;
+                height: 300px;
             }
             
-            /* Ensure full visibility on mobile landscape */
             .canvas-container {
                 height: 400px;
                 max-width: 100%;
             }
             
             .game-panel-container {
+                padding: 25px 20px;
                 max-width: 100%;
             }
             
             .game-question {
                 font-size: 1.3rem;
+                min-height: 80px;
+            }
+            
+            .game-options {
+                flex-direction: column;
+                gap: 12px;
             }
             
             .game-option {
                 min-width: 100%;
-            }
-            
-            .game-btn {
-                padding: 12px 25px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
+                padding: 20px 15px;
                 font-size: 1rem;
-            }
-            
-            .cta-button {
-                padding: 12px 30px;
-            }
-            
-            .values-container {
-                grid-template-columns: 1fr;
-            }
-            
-            /* Cosmic Text Animation Responsive */
-            .cosmic-text-section {
-                padding: 60px 5%;
-                min-height: 40vh;
-            }
-            
-            .cosmic-text-element {
-                font-size: 1.8rem;
-                letter-spacing: 2px;
-            }
-            
-            .cosmic-text-container {
-                height: 200px;
-            }
-            
-            /* Ensure full visibility on mobile portrait */
-            .canvas-container {
-                height: 350px;
-                max-width: 100%;
-            }
-            
-            .game-panel-container {
-                padding: 20px;
-                max-width: 100%;
-            }
-            
-            .game-question {
-                font-size: 1.1rem;
-                min-height: 80px;
             }
             
             .game-controls {
@@ -1119,69 +1322,389 @@
             
             .game-btn {
                 width: 100%;
-                justify-content: center;
-            }
-            
-            /* Make game section more compact on mobile */
-            .game-section {
-                padding: 60px 5%;
-                min-height: auto;
-            }
-            
-            .game-container {
-                gap: 25px;
+                padding: 18px 20px;
+                font-size: 1.1rem;
             }
             
             .game-instructions {
-                margin-top: 20px;
+                padding: 20px;
+                margin: 30px 0;
+                gap: 12px;
+            }
+            
+            .results-container {
+                padding: 40px 25px;
+            }
+            
+            .results-title {
+                font-size: 2rem;
+            }
+            
+            .personality-type {
+                font-size: 1.8rem;
+            }
+            
+            .personality-description {
+                font-size: 1.1rem;
+            }
+            
+            .fashion-recommendation {
+                padding: 25px 20px;
+            }
+            
+            .recommended-items {
+                gap: 15px;
+            }
+            
+            .item-card {
+                width: 160px;
                 padding: 15px;
+            }
+            
+            .item-img {
+                height: 140px;
+            }
+            
+            .discover-btn {
+                min-width: 100%;
+                padding: 18px 30px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 40px;
+                text-align: center;
+            }
+            
+            .footer-column {
+                width: 100%;
+            }
+            
+            .social-links {
+                justify-content: center;
             }
         }
 
-        /* Extra small screens - ensure full visibility */
+        /* Mobile phones */
+        @media (max-width: 576px) {
+            .hero {
+                padding: 70px 15px 20px;
+                min-height: 80vh;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+                margin-bottom: 25px;
+            }
+            
+            .hero-content {
+                padding: 30px 20px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+                margin-bottom: 40px;
+            }
+            
+            .about-text {
+                padding: 25px 20px;
+            }
+            
+            .about-text h3 {
+                font-size: 1.6rem;
+            }
+            
+            .about-text p {
+                font-size: 1rem;
+            }
+            
+            .image-frame {
+                height: 350px;
+            }
+            
+            .cosmic-text-section {
+                padding: 60px 5%;
+                min-height: 40vh;
+            }
+            
+            .cosmic-text-element {
+                font-size: 1.8rem;
+                letter-spacing: 1px;
+            }
+            
+            .cosmic-text-container {
+                height: 250px;
+            }
+            
+            .canvas-container {
+                height: 350px;
+            }
+            
+            .game-intro h2 {
+                font-size: 1.8rem;
+            }
+            
+            .game-intro p {
+                font-size: 1.1rem;
+            }
+            
+            .game-question {
+                font-size: 1.2rem;
+                min-height: 100px;
+            }
+            
+            .game-option {
+                padding: 18px 15px;
+                font-size: 0.95rem;
+            }
+            
+            .game-instructions p {
+                font-size: 0.9rem;
+                flex-wrap: wrap;
+            }
+            
+            .results-title {
+                font-size: 1.8rem;
+            }
+            
+            .personality-type {
+                font-size: 1.6rem;
+            }
+            
+            .personality-description {
+                font-size: 1rem;
+            }
+            
+            .item-card {
+                width: 140px;
+            }
+            
+            .item-img {
+                height: 120px;
+            }
+            
+            .item-name {
+                font-size: 1rem;
+            }
+            
+            .footer-column h3 {
+                font-size: 1.3rem;
+            }
+            
+            .footer-column p {
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Extra small phones */
         @media (max-width: 400px) {
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.1rem;
+            }
+            
+            .logo img {
+                height: 30px;
+            }
+            
+            .mobile-menu-btn {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .about-text h3 {
+                font-size: 1.4rem;
+            }
+            
+            .image-frame {
+                height: 300px;
+            }
+            
+            .cosmic-text-element {
+                font-size: 1.5rem;
+            }
+            
+            .cosmic-text-container {
+                height: 200px;
+            }
+            
             .canvas-container {
                 height: 300px;
             }
             
             .game-intro h2 {
-                font-size: 2rem;
+                font-size: 1.6rem;
             }
             
             .game-question {
-                font-size: 1rem;
-                min-height: 90px;
+                font-size: 1.1rem;
+                min-height: 120px;
             }
             
-            /* Cosmic Text Animation Responsive */
-            .cosmic-text-element {
-                font-size: 1.5rem;
-                letter-spacing: 1px;
+            .game-option {
+                padding: 16px 12px;
+                font-size: 0.9rem;
             }
             
-            .cosmic-text-container {
-                height: 180px;
+            .game-btn {
+                padding: 16px 15px;
+                font-size: 0.95rem;
+            }
+            
+            .results-title {
+                font-size: 1.6rem;
+            }
+            
+            .personality-type {
+                font-size: 1.4rem;
+            }
+            
+            .fashion-recommendation h3 {
+                font-size: 1.4rem;
+            }
+            
+            .recommended-items {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .item-card {
+                width: 100%;
+                max-width: 250px;
+            }
+            
+            .footer-column {
+                min-width: 100%;
             }
         }
-        
-        /* Ensure canvas is always perfectly centered */
-        .canvas-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
+
+        /* Landscape orientation */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .hero {
+                min-height: 120vh;
+                padding-top: 120px;
+            }
+            
+            .canvas-container {
+                height: 350px;
+            }
+            
+            .game-panel-container {
+                margin-top: 10px;
+                padding: 20px;
+            }
+            
+            .game-question {
+                min-height: 40px;
+                margin-bottom: 20px;
+            }
+            
+            .game-options {
+                margin-bottom: 20px;
+            }
         }
-        
-        .logo img {
-            height: 40px;
-            width: auto;
-            object-fit: contain;
-            transition: all 0.3s ease;
+
+        /* High DPI screens */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .cta-button, .game-btn {
+                border-width: 0.5px;
+            }
+            
+            .value-card, .hero-content, .game-panel-container {
+                border-width: 0.5px;
+            }
+        }
+
+        /* Reduced motion preferences */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            
+            .float, .pulse {
+                animation: none;
+            }
+            
+            .cosmic-text-orbit {
+                animation: none;
+            }
+            
+            .cosmic-text-element.active {
+                animation: none;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: var(--bg);
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .parallax,
+            .mobile-menu-btn,
+            .game-section,
+            .cosmic-text-section,
+            .hero-buttons,
+            .social-links,
+            .game-controls,
+            .discover-btn {
+                display: none !important;
+            }
+            
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .hero-content,
+            .about-text,
+            .value-card,
+            .results-container {
+                border: 1px solid #ddd;
+                box-shadow: none;
+                background: white;
+                color: black;
+            }
+            
+            .accent {
+                color: #7c3aed;
+                background: none;
+                -webkit-background-clip: initial;
+                background-clip: initial;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner-ring"></div>
+        <div class="spinner-text">Launching your cosmic journey...</div>
+    </div>
+
     <!-- Parallax Background Elements -->
     <div class="parallax" id="parallax">
         <div class="layer" style="left:-10%;top:5%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(124,58,237,0.16), transparent 20%), radial-gradient(circle at 70% 70%, rgba(6,182,212,0.10), transparent 30%);filter:blur(40px);transform:translateZ(0)"></div>
@@ -1196,7 +1719,7 @@
             <img src="./images/logo.png" alt="STARSApparel" id="logo-image">
         </a>        
         <nav>
-            <ul>
+            <ul id="navMenu">
                 <li><a href="#">INDIVIDUAL BY DESIGN</a></li>
                 <li><a href="#">UNITED IN PURPOSE</a></li>
                 <li><a href="#" class="active">WE ARE STARS</a></li>
@@ -1216,9 +1739,15 @@
             <h1><span class="accent">OUR UNIVERSE</span></h1>
             <h2>Were you really that curious?</h2>
             <p>Welcome to our Universe, where your unique nature links with others like you!</p>
-            <a href="#game" class="cta-button fade-up" data-delay="0.3">
-                <i class="fas fa-rocket"></i> Dicover your novelty!!!
-            </a>
+            <div class="hero-buttons">
+                <a href="#game" class="cta-button fade-up" data-delay="0.3">
+                    <i class="fas fa-rocket"></i> Discover your novelty!!!
+                </a>
+                <a href="https://stars-three-bay.vercel.app/" class="cta-button secondary fade-up" data-delay="0.5">
+                    <i class="fas fa-bag-shopping"></i> Shop Now
+                </a>
+            </div>
+            <h3 style="margin-top: 30px; color: var(--muted); font-size: 1rem;">or <br/>↓ Scroll for more ↓</h3>
         </div>
     </section>
 
@@ -1234,13 +1763,13 @@
             </div>
             <div class="about-image fade-up" data-delay="0.2">
                 <div class="image-frame">
-                    <img src="./images/ephraim.jpg" alt="Urban Pulse streetwear collection">
+                    <img src="./images/ephraim.jpg" alt="Urban Pulse streetwear collection" loading="lazy">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Cosmic Text Animation Section - NEW ADDITION -->
+    <!-- Cosmic Text Animation Section -->
     <section class="cosmic-text-section fade-up" id="cosmicText">
         <div class="cosmic-text-container">
             <div class="cosmic-text-orbit" id="cosmicTextOrbit"></div>
@@ -1273,6 +1802,15 @@
                 <p>In a universe of 8 billion people, your style should be as unique as your fingerprint. Celebrate what makes you different.</p>
             </div>
         </div>
+        
+        <!-- Values CTA -->
+        <div class="values-cta fade-up" data-delay="0.4">
+            <h3>Ready to Wear Your Values?</h3>
+            <p>Explore our collections and find pieces that match your unique personality.</p>
+            <a href="https://stars-three-bay.vercel.app/" class="cta-button">
+                <i class="fas fa-bag-shopping"></i> Shop the Collection
+            </a>
+        </div>
     </section>
 
     <!-- Interactive Game Section -->
@@ -1285,9 +1823,7 @@
             
             <!-- 3D Canvas Container -->
             <div class="canvas-container fade-up" data-delay="0.2">
-                <div class="canvas-wrapper">
-                    <canvas id="gameCanvas"></canvas>
-                </div>
+                <canvas id="gameCanvas"></canvas>
             </div>
             
             <!-- Game Panel -->
@@ -1305,8 +1841,8 @@
                     <button class="game-btn" id="prevBtn" disabled>
                         <i class="fas fa-arrow-left"></i> Previous
                     </button>
-                    <button class="game-btn" id="nextBtn" disabled>
-                        Continue <i class="fas fa-arrow-right"></i>
+                    <button class="game-btn" id="nextBtn">
+                        Start Journey
                     </button>
                 </div>
             </div>
@@ -1326,6 +1862,13 @@
             <div class="personality-type" id="personalityType">The Nebula Dreamer</div>
             <div class="personality-description" id="personalityDescription">
                 Your constellation reveals a creative spirit with an eye for the extraordinary. You value self-expression and aren't afraid to stand out in a crowd. Your style is ethereal yet grounded, blending cosmic inspiration with urban practicality.
+            </div>
+            
+            <!-- Shop Now CTA in Results -->
+            <div style="margin: 30px 0;">
+                <a href="https://stars-three-bay.vercel.app/" class="cta-button pulse" style="background: linear-gradient(90deg, var(--neon3), var(--neon1));">
+                    <i class="fas fa-bolt"></i> Shop Your Style Now
+                </a>
             </div>
             
             <div class="fashion-recommendation">
@@ -1350,6 +1893,18 @@
     <!-- Footer -->
     <footer>
         <div class="footer-content">
+            <!-- Shop Column -->
+            <div class="footer-column">
+                <h3>Shop STARS</h3>
+                <p>Discover the latest drops and exclusive collections designed for those who stand out.</p>
+                <a href="https://stars-three-bay.vercel.app/" class="cta-button" style="padding: 12px 30px; font-size: 0.9rem; margin-top: 15px;">
+                    <i class="fas fa-bag-shopping"></i> Visit Shop
+                </a>
+                <p style="color: var(--muted); font-size: 0.9rem; margin-top: 20px;">
+                    <i class="fas fa-star" style="color: var(--neon2);"></i> New drops every month
+                </p>
+            </div>
+            
             <div class="footer-column">
                 <h3>STARSApparel</h3>
                 <p>Streetwear for the culture. Apparel for the bold. Fashion for the future.</p>
@@ -1361,8 +1916,8 @@
             <div class="footer-column">
                 <h3>Quick Links</h3>
                 <ul style="list-style: none;">
-                    <li><a href="https://stars-three-bay.vercel.app/" style="color: var(--muted); text-decoration: none; line-height: 2;">New Arrivals</a></li>
-                    <li><a href="https://stars-three-bay.vercel.app/" style="color: var(--muted); text-decoration: none; line-height: 2;">Best Sellers</a></li>
+                    <li><a href="https://stars-three-bay.vercel.app/" style="color: var(--muted); text-decoration: none; line-height: 2.5;">New Arrivals</a></li>
+                    <li><a href="https://stars-three-bay.vercel.app/" style="color: var(--muted); text-decoration: none; line-height: 2.5;">Best Sellers</a></li>
                 </ul>
             </div>
             <div class="footer-column">
@@ -1377,7 +1932,37 @@
 
     <script>
         // ============================================
-        // Cosmic Text Animation - NEW FEATURE
+        // Utility Functions
+        // ============================================
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+
+        function checkMobile() {
+            return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // ============================================
+        // Loading Overlay
+        // ============================================
+        window.addEventListener('load', function() {
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            setTimeout(() => {
+                loadingOverlay.classList.add('hidden');
+            }, 1000);
+        });
+
+        // ============================================
+        // Cosmic Text Animation
         // ============================================
         class CosmicTextAnimation {
             constructor() {
@@ -1405,7 +1990,12 @@
                     textElement.className = 'cosmic-text-element';
                     textElement.textContent = phrase.text;
                     textElement.style.color = phrase.color;
-                    textElement.style.transform = `translate(-50%, -50%) rotateY(${index * (360 / this.phrases.length)}deg) translateZ(350px)`;
+                    
+                    // Responsive positioning
+                    const isMobile = checkMobile();
+                    const translateZ = isMobile ? 250 : 350;
+                    textElement.style.transform = `translate(-50%, -50%) rotateY(${index * (360 / this.phrases.length)}deg) translateZ(${translateZ}px)`;
+                    
                     this.container.appendChild(textElement);
                 });
 
@@ -1421,10 +2011,12 @@
 
             createOrbs() {
                 // Create colored orbs that follow the text
-                for (let i = 0; i < 5; i++) {
+                const orbCount = checkMobile() ? 3 : 5;
+                for (let i = 0; i < orbCount; i++) {
                     const orb = document.createElement('div');
                     orb.className = 'cosmic-orb';
-                    orb.style.width = orb.style.height = `${200 + Math.random() * 200}px`;
+                    const size = checkMobile() ? (150 + Math.random() * 150) : (200 + Math.random() * 200);
+                    orb.style.width = orb.style.height = `${size}px`;
                     orb.style.background = `radial-gradient(circle at 30% 30%, ${this.getRandomColor()}, transparent 70%)`;
                     orb.style.left = `${Math.random() * 100}%`;
                     orb.style.top = `${Math.random() * 100}%`;
@@ -1489,7 +2081,7 @@
             }
 
             createParticleBurst(text, color) {
-                const particleCount = 50;
+                const particleCount = checkMobile() ? 25 : 50;
                 const container = this.container;
                 
                 for (let i = 0; i < particleCount; i++) {
@@ -1498,26 +2090,28 @@
                     particle.style.backgroundColor = color;
                     particle.style.left = '50%';
                     particle.style.top = '50%';
-                    particle.style.setProperty('--tx', `${(Math.random() - 0.5) * 200}px`);
-                    particle.style.setProperty('--ty', `${(Math.random() - 0.5) * 200}px`);
+                    const spread = checkMobile() ? 150 : 200;
+                    particle.style.setProperty('--tx', `${(Math.random() - 0.5) * spread}px`);
+                    particle.style.setProperty('--ty', `${(Math.random() - 0.5) * spread}px`);
                     
                     container.appendChild(particle);
                     
                     // Animate particle
-                    particle.style.animation = `particle-burst ${1 + Math.random()}s ease-out forwards`;
+                    const duration = 0.8 + Math.random() * 0.8;
+                    particle.style.animation = `particle-burst ${duration}s ease-out forwards`;
                     
                     // Remove particle after animation
                     setTimeout(() => {
                         if (particle.parentNode === container) {
                             container.removeChild(particle);
                         }
-                    }, 2000);
+                    }, duration * 1000);
                 }
             }
 
             animateParticles() {
                 // Create floating particles
-                const particleCount = 30;
+                const particleCount = checkMobile() ? 20 : 30;
                 const container = this.container;
                 
                 for (let i = 0; i < particleCount; i++) {
@@ -1534,8 +2128,8 @@
                         element: particle,
                         x: Math.random() * 100,
                         y: Math.random() * 100,
-                        speedX: (Math.random() - 0.5) * 0.2,
-                        speedY: (Math.random() - 0.5) * 0.2,
+                        speedX: (Math.random() - 0.5) * 0.15,
+                        speedY: (Math.random() - 0.5) * 0.15,
                         opacity: 0.3
                     });
                 }
@@ -1570,7 +2164,9 @@
             }
         }
 
-        // Game State
+        // ============================================
+        // Game State and Configuration
+        // ============================================
         let gameState = {
             currentStep: 0,
             answers: [],
@@ -1646,70 +2242,73 @@
         };
 
         // Game Questions
-const gameQuestions = [
-    {
-        question: "When you choose what to wear, what matters most?",
-        options: [
-            { text: "That it reflects my creativity and mood", value: "creative" },
-            { text: "That it makes a strong statement", value: "bold" },
-            { text: "That it feels clean, effortless, and intentional", value: "minimalist" },
-            { text: "That it carries meaning or history", value: "nostalgic" },
-            { text: "That it feels new, progressive, and forward-thinking", value: "futuristic" }
-        ]
-    },
-    {
-        question: "How do you want people to describe your style?",
-        options: [
-            { text: "Unpredictable and artistic", value: "creative" },
-            { text: "Confident and commanding", value: "bold" },
-            { text: "Quiet but powerful", value: "minimalist" },
-            { text: "Timeless and soulful", value: "nostalgic" },
-            { text: "Experimental and ahead of the curve", value: "futuristic" }
-        ]
-    },
-    {
-        question: "Which feeling should your outfit give you?",
-        options: [
-            { text: "Freedom to express myself", value: "creative" },
-            { text: "Fearlessness and presence", value: "bold" },
-            { text: "Clarity and control", value: "minimalist" },
-            { text: "Comfort and connection", value: "nostalgic" },
-            { text: "Momentum toward the future", value: "futuristic" }
-        ]
-    },
-    {
-        question: "Your style philosophy is closest to:",
-        options: [
-            { text: "Rules are meant to be broken", value: "creative" },
-            { text: "If I wear it, I own it", value: "bold" },
-            { text: "Less, but better", value: "minimalist" },
-            { text: "Everything has a story", value: "nostalgic" },
-            { text: "Tomorrow inspires what I wear today", value: "futuristic" }
-        ]
-    },
-    {
-        question: "When someone sees you in STARS, what should they instantly know?",
-        options: [
-            { text: "I express myself without limits", value: "creative" },
-            { text: "I stand out naturally", value: "bold" },
-            { text: "I’m confident without trying", value: "minimalist" },
-            { text: "I carry depth and meaning", value: "nostalgic" },
-            { text: "I move with vision", value: "futuristic" }
-        ]
-    }
-];
+        const gameQuestions = [
+            {
+                question: "When you choose what to wear, what matters most?",
+                options: [
+                    { text: "That it reflects my creativity and mood", value: "creative" },
+                    { text: "That it makes a strong statement", value: "bold" },
+                    { text: "That it feels clean, effortless, and intentional", value: "minimalist" },
+                    { text: "That it carries meaning or history", value: "nostalgic" },
+                    { text: "That it feels new, progressive, and forward-thinking", value: "futuristic" }
+                ]
+            },
+            {
+                question: "How do you want people to describe your style?",
+                options: [
+                    { text: "Unpredictable and artistic", value: "creative" },
+                    { text: "Confident and commanding", value: "bold" },
+                    { text: "Quiet but powerful", value: "minimalist" },
+                    { text: "Timeless and soulful", value: "nostalgic" },
+                    { text: "Experimental and ahead of the curve", value: "futuristic" }
+                ]
+            },
+            {
+                question: "Which feeling should your outfit give you?",
+                options: [
+                    { text: "Freedom to express myself", value: "creative" },
+                    { text: "Fearlessness and presence", value: "bold" },
+                    { text: "Clarity and control", value: "minimalist" },
+                    { text: "Comfort and connection", value: "nostalgic" },
+                    { text: "Momentum toward the future", value: "futuristic" }
+                ]
+            },
+            {
+                question: "Your style philosophy is closest to:",
+                options: [
+                    { text: "Rules are meant to be broken", value: "creative" },
+                    { text: "If I wear it, I own it", value: "bold" },
+                    { text: "Less, but better", value: "minimalist" },
+                    { text: "Everything has a story", value: "nostalgic" },
+                    { text: "Tomorrow inspires what I wear today", value: "futuristic" }
+                ]
+            },
+            {
+                question: "When someone sees you in STARS, what should they instantly know?",
+                options: [
+                    { text: "I express myself without limits", value: "creative" },
+                    { text: "I stand out naturally", value: "bold" },
+                    { text: "I'm confident without trying", value: "minimalist" },
+                    { text: "I carry depth and meaning", value: "nostalgic" },
+                    { text: "I move with vision", value: "futuristic" }
+                ]
+            }
+        ];
 
-
-        // Three.js Variables
+        // ============================================
+        // 3D Scene Variables
+        // ============================================
         let scene, camera, renderer, controls;
         let stars = [];
         let constellations = [];
         let currentPlanet = null;
         let particles = [];
         let canvasContainer;
-        let isMobile = false;
+        let isMobile = checkMobile();
 
+        // ============================================
         // DOM Elements
+        // ============================================
         const questionText = document.getElementById('questionText');
         const optionsContainer = document.getElementById('optionsContainer');
         const prevBtn = document.getElementById('prevBtn');
@@ -1721,95 +2320,164 @@ const gameQuestions = [
         const recommendedItems = document.getElementById('recommendedItems');
         const exploreCollectionBtn = document.getElementById('exploreCollectionBtn');
 
-        // Check if device is mobile
-        function checkMobile() {
-            return window.innerWidth <= 768;
-        }
-
-        // Initialize 3D Scene with proper scaling for all devices
+        // ============================================
+        // 3D Scene Functions
+        // ============================================
         function init3DScene() {
-            // Get canvas container
-            canvasContainer = document.querySelector('.canvas-container');
-            isMobile = checkMobile();
-            
-            // Create scene
-            scene = new THREE.Scene();
-            scene.fog = new THREE.Fog(0x030313, 10, 100);
+            try {
+                // Get canvas container
+                canvasContainer = document.querySelector('.canvas-container');
+                isMobile = checkMobile();
+                
+                // Create scene
+                scene = new THREE.Scene();
+                scene.fog = new THREE.Fog(0x030313, 10, 100);
 
-            // Create camera with adjusted settings for mobile
-            const fov = isMobile ? 60 : 75; // Wider field of view for mobile
-            camera = new THREE.PerspectiveCamera(fov, getAspectRatio(), 0.1, 1000);
-            
-            // Adjust camera position based on device
-            if (isMobile) {
-                camera.position.set(0, 3, 12); // Closer for mobile
-            } else {
-                camera.position.set(0, 5, 15); // Original position for desktop
+                // Create camera with responsive settings
+                const fov = isMobile ? 70 : 75;
+                camera = new THREE.PerspectiveCamera(fov, getAspectRatio(), 0.1, 1000);
+                
+                // Adjust camera position based on device
+                if (isMobile) {
+                    camera.position.set(0, 2, 8);
+                } else {
+                    camera.position.set(0, 4, 12);
+                }
+
+                // Create renderer with mobile optimization
+                const canvas = document.getElementById('gameCanvas');
+                renderer = new THREE.WebGLRenderer({ 
+                    canvas: canvas,
+                    antialias: !isMobile,
+                    alpha: true,
+                    powerPreference: isMobile ? "default" : "high-performance",
+                    precision: isMobile ? "mediump" : "highp"
+                });
+                
+                // Set initial size
+                updateRendererSize();
+                
+                // Optimize pixel ratio
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+                renderer.shadowMap.enabled = !isMobile;
+                renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+                
+                // Optimize for mobile
+                if (isMobile) {
+                    renderer.outputEncoding = THREE.sRGBEncoding;
+                }
+
+                // Add optimized controls
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.08;
+                controls.maxDistance = isMobile ? 20 : 40;
+                controls.minDistance = isMobile ? 2 : 4;
+                controls.maxPolarAngle = Math.PI / 2;
+                controls.enableZoom = true;
+                controls.enablePan = false;
+                
+                // Lower sensitivity on mobile
+                if (isMobile) {
+                    controls.rotateSpeed = 0.5;
+                    controls.zoomSpeed = 0.8;
+                }
+
+                // Add lighting optimized for mobile
+                const ambientLight = new THREE.AmbientLight(0x444444);
+                scene.add(ambientLight);
+
+                const directionalLight = new THREE.DirectionalLight(0x7c3aed, isMobile ? 0.8 : 1.2);
+                directionalLight.position.set(isMobile ? 5 : 10, isMobile ? 5 : 10, isMobile ? 2 : 5);
+                scene.add(directionalLight);
+
+                // Create stars
+                createStars();
+
+                // Create central planet
+                createCentralPlanet();
+
+                // Create orbiting particles
+                createOrbitingParticles();
+
+                // Add touch controls for mobile
+                if (isMobile) {
+                    setupTouchControls();
+                }
+
+                // Start animation
+                animate();
+                
+                // Add optimized resize listener
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(onWindowResize, 250);
+                });
+                
+            } catch (error) {
+                console.error('3D initialization failed:', error);
+                // Fallback to static image
+                showFallbackImage();
             }
-
-            // Create renderer
-            const canvas = document.getElementById('gameCanvas');
-            renderer = new THREE.WebGLRenderer({ 
-                canvas: canvas,
-                antialias: true,
-                alpha: true,
-                powerPreference: "high-performance"
-            });
-            
-            // Set initial size
-            updateRendererSize();
-            
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.shadowMap.enabled = !isMobile; // Disable shadows on mobile for performance
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-            // Add controls
-            controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.05;
-            controls.maxDistance = isMobile ? 30 : 50;
-            controls.minDistance = isMobile ? 3 : 5;
-            controls.maxPolarAngle = Math.PI / 2;
-            controls.enableZoom = true;
-            controls.enablePan = false;
-
-            // Add lighting
-            const ambientLight = new THREE.AmbientLight(0x444444);
-            scene.add(ambientLight);
-
-            const directionalLight = new THREE.DirectionalLight(0x7c3aed, isMobile ? 0.6 : 0.8);
-            directionalLight.position.set(10, 10, 5);
-            if (!isMobile) directionalLight.castShadow = true;
-            scene.add(directionalLight);
-
-            const pointLight = new THREE.PointLight(0x06b6d4, isMobile ? 0.3 : 0.5, 100);
-            pointLight.position.set(-10, 5, -5);
-            scene.add(pointLight);
-
-            // Create stars with adjusted density for mobile
-            createStars();
-
-            // Create central planet with adjusted size
-            createCentralPlanet();
-
-            // Create orbiting particles with adjusted count
-            createOrbitingParticles();
-
-            // Start animation
-            animate();
-            
-            // Add resize listener
-            window.addEventListener('resize', onWindowResize);
         }
 
-        // Get current aspect ratio
+        function setupTouchControls() {
+            let touchStartX, touchStartY;
+            const canvas = renderer.domElement;
+            
+            canvas.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                e.preventDefault();
+            }, { passive: false });
+            
+            canvas.addEventListener('touchmove', (e) => {
+                if (!touchStartX || !touchStartY) return;
+                
+                const touchX = e.touches[0].clientX;
+                const touchY = e.touches[0].clientY;
+                
+                const deltaX = touchX - touchStartX;
+                const deltaY = touchY - touchStartY;
+                
+                // Rotate camera based on touch movement
+                camera.rotation.y += deltaX * 0.01;
+                camera.rotation.x = Math.max(-Math.PI/2, Math.min(Math.PI/2, camera.rotation.x + deltaY * 0.01));
+                
+                touchStartX = touchX;
+                touchStartY = touchY;
+                
+                e.preventDefault();
+            }, { passive: false });
+            
+            canvas.addEventListener('touchend', () => {
+                touchStartX = null;
+                touchStartY = null;
+            });
+        }
+
+        function showFallbackImage() {
+            const canvasContainer = document.querySelector('.canvas-container');
+            if (canvasContainer) {
+                canvasContainer.innerHTML = `
+                    <div class="fallback-image">
+                        <div style="text-align: center; padding: 20px; color: white;">
+                            <i class="fas fa-universe" style="font-size: 3rem; color: var(--neon1); margin-bottom: 20px;"></i>
+                            <p style="font-size: 1.2rem; margin-bottom: 10px;">Cosmic View Unavailable</p>
+                            <p style="color: var(--muted);">Continue with the personality quiz below!</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
         function getAspectRatio() {
             const width = canvasContainer.clientWidth;
             const height = canvasContainer.clientHeight;
             return width / height;
         }
 
-        // Update renderer size
         function updateRendererSize() {
             const width = canvasContainer.clientWidth;
             const height = canvasContainer.clientHeight;
@@ -1817,7 +2485,7 @@ const gameQuestions = [
             renderer.setSize(width, height);
             camera.aspect = width / height;
             
-            // Adjust field of view for very tall screens
+            // Adjust field of view for aspect ratio
             if (height > width) {
                 camera.fov = isMobile ? 70 : 80;
             } else {
@@ -1827,38 +2495,36 @@ const gameQuestions = [
             camera.updateProjectionMatrix();
         }
 
-        // Handle window resize
         function onWindowResize() {
             isMobile = checkMobile();
             updateRendererSize();
             
-            // Adjust camera position if needed
+            // Adjust camera position
             if (isMobile) {
-                camera.position.set(0, 3, 12);
-                camera.fov = 60;
+                camera.position.set(0, 2, 8);
+                camera.fov = 70;
             } else {
-                camera.position.set(0, 5, 15);
+                camera.position.set(0, 4, 12);
                 camera.fov = 75;
             }
             camera.updateProjectionMatrix();
         }
 
-        // Create starfield - adjusted for perfect visibility
         function createStars() {
             const starGeometry = new THREE.BufferGeometry();
-            const starCount = isMobile ? 1000 : 2000; // Adjusted for mobile
+            const starCount = isMobile ? 800 : 1500;
             const positions = new Float32Array(starCount * 3);
             const colors = new Float32Array(starCount * 3);
             const sizes = new Float32Array(starCount);
 
-            // Adjust star distribution for better visibility
-            const maxRadius = isMobile ? 35 : 50; // Closer stars for mobile
-            const minRadius = 20;
+            // Adjust star distribution
+            const maxRadius = isMobile ? 30 : 45;
+            const minRadius = 15;
 
             for (let i = 0; i < starCount; i++) {
                 const i3 = i * 3;
                 
-                // Position - create a sphere but keep stars closer for mobile
+                // Position
                 const radius = minRadius + Math.random() * (maxRadius - minRadius);
                 const theta = Math.random() * Math.PI * 2;
                 const phi = Math.acos(2 * Math.random() - 1);
@@ -1870,21 +2536,21 @@ const gameQuestions = [
                 // Color
                 const colorVal = Math.random();
                 if (colorVal < 0.3) {
-                    colors[i3] = 0.49; // Purple
+                    colors[i3] = 0.49;
                     colors[i3 + 1] = 0.23;
                     colors[i3 + 2] = 0.93;
                 } else if (colorVal < 0.6) {
-                    colors[i3] = 0.02; // Cyan
+                    colors[i3] = 0.02;
                     colors[i3 + 1] = 0.71;
                     colors[i3 + 2] = 0.83;
                 } else {
-                    colors[i3] = 1.0; // Pink
+                    colors[i3] = 1.0;
                     colors[i3 + 1] = 0.3;
                     colors[i3 + 2] = 0.43;
                 }
                 
-                // Size - slightly larger for mobile visibility
-                sizes[i] = isMobile ? 0.15 + Math.random() * 0.2 : 0.1 + Math.random() * 0.15;
+                // Size
+                sizes[i] = isMobile ? 0.12 + Math.random() * 0.15 : 0.08 + Math.random() * 0.12;
             }
 
             starGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
@@ -1892,7 +2558,7 @@ const gameQuestions = [
             starGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
             const starMaterial = new THREE.PointsMaterial({
-                size: isMobile ? 0.15 : 0.1,
+                size: isMobile ? 0.12 : 0.08,
                 vertexColors: true,
                 transparent: true,
                 opacity: 0.9,
@@ -1903,10 +2569,10 @@ const gameQuestions = [
             scene.add(starField);
         }
 
-        // Create central planet - adjusted for perfect visibility
         function createCentralPlanet() {
-            const planetSize = isMobile ? 2 : 3;
-            const planetGeometry = new THREE.SphereGeometry(planetSize, isMobile ? 24 : 32, isMobile ? 24 : 32);
+            const planetSize = isMobile ? 1.5 : 2.5;
+            const segments = isMobile ? 24 : 32;
+            const planetGeometry = new THREE.SphereGeometry(planetSize, segments, segments);
             
             // Create gradient texture
             const canvas = document.createElement('canvas');
@@ -1942,7 +2608,7 @@ const gameQuestions = [
             scene.add(currentPlanet);
             
             // Add atmospheric glow
-            const glowGeometry = new THREE.SphereGeometry(planetSize * 1.1, isMobile ? 24 : 32, isMobile ? 24 : 32);
+            const glowGeometry = new THREE.SphereGeometry(planetSize * 1.1, segments, segments);
             const glowMaterial = new THREE.MeshBasicMaterial({
                 color: 0x7c3aed,
                 transparent: true,
@@ -1953,15 +2619,15 @@ const gameQuestions = [
             scene.add(glow);
         }
 
-        // Create orbiting particles - adjusted for visibility
         function createOrbitingParticles() {
-            const particleCount = isMobile ? 20 : 40;
+            const particleCount = isMobile ? 15 : 30;
             
             for (let i = 0; i < particleCount; i++) {
-                const size = isMobile ? 0.15 + Math.random() * 0.25 : 0.1 + Math.random() * 0.2;
-                const geometry = new THREE.SphereGeometry(size, isMobile ? 6 : 8, isMobile ? 6 : 8);
+                const size = isMobile ? 0.12 + Math.random() * 0.2 : 0.08 + Math.random() * 0.15;
+                const segments = isMobile ? 6 : 8;
+                const geometry = new THREE.SphereGeometry(size, segments, segments);
                 
-                // Random color based on game personality types
+                // Random color
                 const colors = [0x7c3aed, 0x06b6d4, 0xff4d6d];
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 
@@ -1974,10 +2640,10 @@ const gameQuestions = [
                 
                 const particle = new THREE.Mesh(geometry, material);
                 
-                // Position in orbit - adjusted for mobile
-                const orbitRadius = (isMobile ? 3 : 5) + Math.random() * (isMobile ? 6 : 8);
+                // Position in orbit
+                const orbitRadius = (isMobile ? 2 : 4) + Math.random() * (isMobile ? 4 : 6);
                 const angle = Math.random() * Math.PI * 2;
-                const height = (Math.random() - 0.5) * (isMobile ? 4 : 6);
+                const height = (Math.random() - 0.5) * (isMobile ? 3 : 4);
                 
                 particle.position.x = orbitRadius * Math.cos(angle);
                 particle.position.y = height;
@@ -1987,9 +2653,9 @@ const gameQuestions = [
                 particle.userData = {
                     orbitRadius: orbitRadius,
                     angle: angle,
-                    speed: (isMobile ? 0.005 : 0.01) + Math.random() * (isMobile ? 0.01 : 0.02),
+                    speed: (isMobile ? 0.004 : 0.008) + Math.random() * (isMobile ? 0.008 : 0.015),
                     height: height,
-                    verticalSpeed: (Math.random() - 0.5) * 0.003
+                    verticalSpeed: (Math.random() - 0.5) * 0.002
                 };
                 
                 if (!isMobile) particle.castShadow = true;
@@ -1998,13 +2664,12 @@ const gameQuestions = [
             }
         }
 
-        // Animate scene
         function animate() {
             requestAnimationFrame(animate);
             
             // Rotate planet
             if (currentPlanet) {
-                currentPlanet.rotation.y += isMobile ? 0.002 : 0.005;
+                currentPlanet.rotation.y += isMobile ? 0.0015 : 0.003;
             }
             
             // Update particles
@@ -2017,7 +2682,7 @@ const gameQuestions = [
                 
                 // Add slight vertical movement
                 particle.position.y += data.verticalSpeed;
-                if (Math.abs(particle.position.y) > (isMobile ? 3 : 5)) {
+                if (Math.abs(particle.position.y) > (isMobile ? 2.5 : 4)) {
                     data.verticalSpeed *= -1;
                 }
                 
@@ -2027,13 +2692,17 @@ const gameQuestions = [
             });
             
             // Update controls
-            controls.update();
+            if (controls) controls.update();
             
             // Render
-            renderer.render(scene, camera);
+            if (renderer && scene && camera) {
+                renderer.render(scene, camera);
+            }
         }
 
-        // Initialize game UI
+        // ============================================
+        // Game UI Functions
+        // ============================================
         function initGameUI() {
             updateQuestion();
             updateProgressBar();
@@ -2117,7 +2786,6 @@ const gameQuestions = [
             });
         }
 
-        // Update question and options
         function updateQuestion() {
             if (gameState.currentStep === 0) {
                 questionText.textContent = "Welcome to the Personality Cosmos! Ready to begin your journey?";
@@ -2151,13 +2819,11 @@ const gameQuestions = [
             }
         }
 
-        // Update progress bar
         function updateProgressBar() {
             const progress = (gameState.currentStep / gameQuestions.length) * 100;
             progressBar.style.width = `${progress}%`;
         }
 
-        // Update buttons
         function updateButtons() {
             prevBtn.disabled = gameState.currentStep <= 1;
             
@@ -2171,7 +2837,6 @@ const gameQuestions = [
             }
         }
 
-        // Create visual effect for answer
         function createAnswerEffect(answerType) {
             const colors = {
                 creative: 0x7c3aed,
@@ -2182,26 +2847,27 @@ const gameQuestions = [
             };
             
             const color = colors[answerType];
+            if (!color || !scene) return;
             
             // Create a burst of particles
-            const particleCount = isMobile ? 10 : 20;
+            const particleCount = isMobile ? 8 : 15;
             for (let i = 0; i < particleCount; i++) {
-                const geometry = new THREE.SphereGeometry(0.05, 4, 4);
+                const geometry = new THREE.SphereGeometry(0.04, 4, 4);
                 const material = new THREE.MeshBasicMaterial({ color: color });
                 const particle = new THREE.Mesh(geometry, material);
                 
                 // Position near the planet
                 particle.position.set(
-                    (Math.random() - 0.5) * 2,
-                    (Math.random() - 0.5) * 2,
-                    (Math.random() - 0.5) * 2
-                ).normalize().multiplyScalar(isMobile ? 2.5 : 4);
+                    (Math.random() - 0.5) * 1.5,
+                    (Math.random() - 0.5) * 1.5,
+                    (Math.random() - 0.5) * 1.5
+                ).normalize().multiplyScalar(isMobile ? 2 : 3);
                 
                 // Random velocity
                 particle.userData.velocity = new THREE.Vector3(
-                    (Math.random() - 0.5) * 0.1,
-                    (Math.random() - 0.5) * 0.1,
-                    (Math.random() - 0.5) * 0.1
+                    (Math.random() - 0.5) * 0.08,
+                    (Math.random() - 0.5) * 0.08,
+                    (Math.random() - 0.5) * 0.08
                 );
                 
                 particle.userData.life = 100;
@@ -2211,17 +2877,16 @@ const gameQuestions = [
             }
             
             // Create a light flash
-            const flash = new THREE.PointLight(color, 2, 10);
+            const flash = new THREE.PointLight(color, 1.5, 8);
             flash.position.copy(camera.position);
             scene.add(flash);
             
             // Remove flash after short time
             setTimeout(() => {
-                scene.remove(flash);
+                if (scene) scene.remove(flash);
             }, 200);
         }
 
-        // Show results
         function showResults() {
             // Calculate personality type
             const personalityTypeResult = calculatePersonalityType();
@@ -2234,13 +2899,14 @@ const gameQuestions = [
             resultsSection.style.display = 'block';
             
             // Scroll to results
-            resultsSection.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
             
-            // Create celebration effect in 3D scene
+            // Create celebration effect
             createCelebrationEffect();
         }
 
-        // Calculate personality type
         function calculatePersonalityType() {
             // Find the dominant traits
             const scores = gameState.personalityScore;
@@ -2279,7 +2945,6 @@ const gameQuestions = [
             return bestMatch;
         }
 
-        // Update results section
         function updateResults(personalityTypeResult) {
             // Set personality type and description
             personalityType.textContent = personalityTypeResult.name;
@@ -2327,13 +2992,13 @@ const gameQuestions = [
             
             recommendedItems.innerHTML = itemsHTML;
             
-            // Update shop button to go to your collection website with UTM parameters
+            // Update shop button
             const utmParams = new URLSearchParams({
                 utm_source: 'personality_quiz',
                 utm_medium: 'website',
                 utm_campaign: 'cosmic_style_profile',
-                personality: personalityTypeResult.name,
-                collection: personalityTypeResult.collection,
+                personality: encodeURIComponent(personalityTypeResult.name),
+                collection: encodeURIComponent(personalityTypeResult.collection),
                 traits: personalityTypeResult.traits.join(',')
             }).toString();
             
@@ -2341,10 +3006,11 @@ const gameQuestions = [
             exploreCollectionBtn.innerHTML = `<i class="fas fa-external-link-alt"></i> SHOP ${personalityTypeResult.collection.toUpperCase()} COLLECTION`;
         }
 
-        // Create celebration effect
         function createCelebrationEffect() {
+            if (!scene || isMobile) return;
+            
             // Create a ring of light around the planet
-            const ringGeometry = new THREE.TorusGeometry(isMobile ? 4 : 6, 0.1, 8, 100);
+            const ringGeometry = new THREE.TorusGeometry(4, 0.08, 8, 100);
             const ringMaterial = new THREE.MeshBasicMaterial({
                 color: 0x7c3aed,
                 transparent: true,
@@ -2363,7 +3029,7 @@ const gameQuestions = [
             ringAnimation();
             
             // Add shooting stars
-            const shootingStarCount = isMobile ? 5 : 10;
+            const shootingStarCount = 3;
             for (let i = 0; i < shootingStarCount; i++) {
                 setTimeout(() => {
                     createShootingStar();
@@ -2371,16 +3037,17 @@ const gameQuestions = [
             }
         }
 
-        // Create shooting star
         function createShootingStar() {
-            const geometry = new THREE.SphereGeometry(0.1, 8, 8);
+            if (!scene) return;
+            
+            const geometry = new THREE.SphereGeometry(0.08, 8, 8);
             const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
             const star = new THREE.Mesh(geometry, material);
             
             // Random start position
-            const startX = (Math.random() - 0.5) * 30;
-            const startY = 10 + Math.random() * 10;
-            const startZ = (Math.random() - 0.5) * 30;
+            const startX = (Math.random() - 0.5) * 20;
+            const startY = 8 + Math.random() * 8;
+            const startZ = (Math.random() - 0.5) * 20;
             
             star.position.set(startX, startY, startZ);
             
@@ -2388,7 +3055,7 @@ const gameQuestions = [
             
             // Animate shooting star
             const startTime = Date.now();
-            const duration = 2000;
+            const duration = 1500;
             
             const animateShootingStar = () => {
                 const elapsed = Date.now() - startTime;
@@ -2396,7 +3063,7 @@ const gameQuestions = [
                 
                 if (progress < 1) {
                     // Move downward
-                    star.position.y = startY - progress * 20;
+                    star.position.y = startY - progress * 16;
                     
                     // Add trail
                     const trail = star.clone();
@@ -2409,42 +3076,73 @@ const gameQuestions = [
                     
                     // Remove trail after short time
                     setTimeout(() => {
-                        scene.remove(trail);
+                        if (scene) scene.remove(trail);
                     }, 100);
                     
                     requestAnimationFrame(animateShootingStar);
                 } else {
-                    scene.remove(star);
+                    if (scene) scene.remove(star);
                 }
             };
             
             animateShootingStar();
         }
 
-        // Initialize everything when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Cosmic Text Animation
-            new CosmicTextAnimation();
-            
-            // Wait a bit for DOM to be fully ready
-            setTimeout(() => {
-                init3DScene();
-                initGameUI();
-            }, 100);
-            
-            // Header scroll effect
-            window.addEventListener('scroll', () => {
-                const header = document.getElementById('header');
-                if (window.scrollY > 100) {
-                    header.style.padding = '15px 5%';
-                    header.style.backgroundColor = 'rgba(3, 3, 19, 0.95)';
-                } else {
-                    header.style.padding = '20px 5%';
-                    header.style.backgroundColor = 'rgba(3, 3, 19, 0.85)';
-                }
-            });
+        // ============================================
+        // Mobile Navigation
+        // ============================================
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        const menuIcon = mobileMenuBtn.querySelector('i');
 
-            // Scroll animation for fade-up elements
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+            if (navMenu.classList.contains('active')) {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times');
+                document.body.style.overflow = 'hidden';
+            } else {
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('nav ul a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navMenu.contains(e.target) && !mobileMenuBtn.contains(e.target) && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // ============================================
+        // Scroll Animations
+        // ============================================
+        function initScrollAnimations() {
             const fadeElements = document.querySelectorAll('.fade-up');
             
             const appearOnScroll = new IntersectionObserver((entries) => {
@@ -2457,50 +3155,130 @@ const gameQuestions = [
                         appearOnScroll.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.1 });
+            }, { 
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
             
             fadeElements.forEach(element => {
                 appearOnScroll.observe(element);
             });
 
-            // Parallax effect
+            // Header scroll effect
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', throttle(() => {
+                if (window.scrollY > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }, 100));
+        }
+
+        // ============================================
+        // Parallax Effect
+        // ============================================
+        function initParallax() {
             const parallax = document.getElementById('parallax');
             if (parallax) {
-                document.addEventListener('mousemove', (e) => {
-                    const x = (e.clientX / window.innerWidth - 0.5) * 10;
-                    const y = (e.clientY / window.innerHeight - 0.5) * 10;
+                document.addEventListener('mousemove', throttle((e) => {
+                    const x = (e.clientX / window.innerWidth - 0.5) * 8;
+                    const y = (e.clientY / window.innerHeight - 0.5) * 8;
                     parallax.querySelectorAll('.layer').forEach((layer, i) => {
-                        layer.style.transform = `translate(${x * (i+1)}px, ${y * (i+1)}px)`;
+                        const multiplier = i + 1;
+                        layer.style.transform = `translate(${x * multiplier}px, ${y * multiplier}px)`;
                     });
-                });
+                }, 50));
             }
+        }
 
-            // Smooth scroll for anchor links
+        // ============================================
+        // Smooth Scroll
+        // ============================================
+        function initSmoothScroll() {
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
                     const targetId = this.getAttribute('href');
                     if (targetId === '#') return;
                     
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
+                        e.preventDefault();
                         window.scrollTo({
                             top: targetElement.offsetTop - 80,
                             behavior: 'smooth'
                         });
+                        
+                        // Close mobile menu if open
+                        if (navMenu.classList.contains('active')) {
+                            navMenu.classList.remove('active');
+                            menuIcon.classList.remove('fa-times');
+                            menuIcon.classList.add('fa-bars');
+                            document.body.style.overflow = 'auto';
+                        }
                     }
                 });
             });
+        }
 
-            // Mobile menu functionality
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            if (mobileMenuBtn) {
-                mobileMenuBtn.addEventListener('click', () => {
-                    const nav = document.querySelector('nav ul');
-                    if (nav) {
-                        nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-                    }
+        // ============================================
+        // Lazy Loading Images
+        // ============================================
+        function initLazyLoading() {
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.dataset.src) {
+                                img.src = img.dataset.src;
+                            }
+                            img.classList.add('loaded');
+                            imageObserver.unobserve(img);
+                        }
+                    });
                 });
+                
+                document.querySelectorAll('img[data-src]').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
+        }
+
+        // ============================================
+        // Initialize Everything
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Cosmic Text Animation
+            new CosmicTextAnimation();
+            
+            // Wait a bit for DOM to be fully ready
+            setTimeout(() => {
+                init3DScene();
+                initGameUI();
+            }, 300);
+            
+            // Initialize other features
+            initScrollAnimations();
+            initParallax();
+            initSmoothScroll();
+            initLazyLoading();
+            
+            // Handle orientation changes
+            window.addEventListener('orientationchange', () => {
+                setTimeout(() => {
+                    onWindowResize();
+                }, 300);
+            });
+        });
+
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // Page is hidden, pause heavy animations if needed
+            } else {
+                // Page is visible again
+                onWindowResize();
             }
         });
     </script>
